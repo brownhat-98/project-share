@@ -1,0 +1,33 @@
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Delete Order</h1>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="userdash.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'userorders' user.customer.id %}">Orders</a></li>
+    <li class="breadcrumb-item active">Delete Order</li>
+  </ol>
+</nav>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="card card-body pt-2">
+      <p>Are you sure you want to delete the order "{{ order }}"?</p>
+      <p>Name : {{ order.product }}</p>
+      <p>Quantity : {{ order.quantity }}</p>
+      <p>Order Status : {{ order.status }}</p>
+      <form method="post">
+          {% csrf_token %}
+          <input type="submit" value="Delete">
+      </form>
+      <a href="{% url 'home' %}">Cancel</a>
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}

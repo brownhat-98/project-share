@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- admindash content -->
+    <h1>Admin Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Admin-dash</li>
+      </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-sm-4 mb-4 mb-sm-0">
+          <div class="card">
+            <div class="card-header text-center bg-primary text-light">Total Orders</div>
+            <div class="card-body text-center">
+              <h5 class="card-title ">{{ total_orders }}</h5>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 mb-4 mb-sm-0">
+          <div class="card">
+            <div class="card-header text-center bg-primary text-light">Delivered</div>
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ delivered }}</h5>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 mb-4 mb-sm-0">
+          <div class="card">
+           <div class="card-header text-center bg-primary text-light">Pending</div>
+           <div class="card-body text-center">
+             <h5 class="card-title">{{ pending }}</h5>
+           </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 ">
+        <h5>CUSTOMERS</h5>
+        <div class="card card-body pt-3" style="height: 32.5vh; overflow-y: auto;">
+          <a href="{% url 'userdetails' %}" class="btn btn-primary btn-sm btn-block">User Details</a>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>E-mail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for customer in cpage %}
+                <tr>
+                  <td>{{ customer.name }}</td>
+                  <td>{{ customer.email }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+        
+        <!-- Customer Pagination -->
+        <nav aria-label="Customer Pagination">
+          <ul class="pagination justify-content-center">
+            {% if cpage.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?cpage=1">&laquo;</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?cpage={{ cpage.previous_page_number }}">{{ cpage.previous_page_number }}</a>
+              </li>
+            {% endif %}
+            <li class="page-item active">
+              <a class="page-link" href="?cpage={{ cpage.number }}">{{ cpage.number }}</a>
+            </li>
+            {% if cpage.has_next %}
+              <li class="page-item">
+                  <a class="page-link" href="?cpage={{ cpage.next_page_number }}">{{ cpage.next_page_number }}</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?cpage={{ cpage.paginator.num_pages }}">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>  
+
+      <div class="col-md-7">
+        <h5>ORDERS</h5>
+        <div class="card card-body pt-3" style="height: 32.5vh; overflow-y: auto;">
+          <a href="userproducts" class="btn btn-primary btn-sm btn-block">Create Order</a>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Status</th>
+                  <th>Date Ordered</th>
+                  <th>Update</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in opage %}
+                <tr>
+                  <td>{{ order.product}}</td>
+                  <td>{{ order.date_created }}</td>
+                  <td>{{ order.status}}</td>
+                  <td><a  href="{% url 'updateorder' order.id %}" class="btn btn-outline-warning">Update</a></td>
+                  <td><a  href="{% url 'deleteorder' order.id %}" class="btn btn-outline-danger">Delete</a></td>
+                </tr>
+                {% endfor %}
+              </tbody>    
+            </table>
+        </div>
+        
+        <!-- Pagination for Orders -->
+        <nav aria-label="Order Pagination">
+          <ul class="pagination justify-content-center">
+            {% if opage.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?opage=1">&laquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?opage={{ opage.previous_page_number }}">{{ opage.previous_page_number }}</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link" href="?opage={{ opage.number }}">{{ opage.number }}</a>
+            </li>
+            {% if opage.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?opage={{ opage.next_page_number }}">{{ opage.next_page_number }}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?opage={{ opage.paginator.num_pages }}">&raquo;</a>
+                </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>  
+    <!-- admindash content end-->
+</div>
+{% endblock %}

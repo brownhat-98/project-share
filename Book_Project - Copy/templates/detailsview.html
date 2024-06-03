@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    
+<div class="card" style="width: 18rem;">
+    <img src="{{ book.cover_url }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <p class="card-text">{{ book.title }}</p>
+        <p>Price : {{ book.price }}</p>
+    </div>
+  </div>
+{% endblock %}

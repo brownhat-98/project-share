@@ -1,0 +1,37 @@
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Place Order</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'userdash' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cart_sum' %}">Cart Summary</a></li>
+            <li class="breadcrumb-item active">Place Order</li>
+        </ol>
+    </nav>
+
+    <form method="post" action="{% url 'place_order' %}">
+        {% csrf_token %}
+        <div class="card shadow-sm pt-3">
+            <div class="card-body row col-md-12">
+                {% for product in cart_products %}
+                <div class="card shadow-sm pt-3">
+                    <div class="card-body row col-md-12">
+                        <img class="img-thumbnail col-md-3 justify-content" src="{{ product.cover_url }}" alt="">
+                        <div class="card-text col-md-9">
+                            <div class="card shadow-sm align-items-center bg-light">
+                                <p>Book Title : {{ product.title }}</p>
+                                <p>Author : {{ product.author }}</p>
+                                <p>Price : {{ product.price }}</p>
+                                <p>Quantity : {{ product.quantity }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Confirm Order</button>
+    </form>
+{% endblock %}

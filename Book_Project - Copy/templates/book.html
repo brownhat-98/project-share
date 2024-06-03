@@ -1,0 +1,61 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-3"><h1>Create book</h1></div>
+        <div class="col-md-3"><a href="{% url 'author' %}" class="btn btn-primary">Add Author</a></div>
+        <form action="" method="POST">
+    </div>        
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+        
+
+    </form>
+    
+    <br><br>
+
+    <h1>Book List</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr><th scope="col">Index</th>
+                <th scope="col">Book Name</th>
+                <th scope="col">Book Author</th> 
+                <th scope="col">Book Price</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr><td>{{forloop.counter}}</td>
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.price}}</td>
+                <td><a href="{% url 'details' book.id %}" type="submit" class="btn btn-outline-primary">Details</a>
+                    <a href="{% url 'update' book.id %}" type="submit" class="btn btn-outline-sucess">Update</a>
+                    <a href="{% url 'delete' book.id %}" type="submit" class="btn btn-outline-danger">Delete</a></td>
+                    
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+    <!-- <h1>Listbook</h1> 
+    
+    {% for book in books %}
+    {{ book.title }}
+    {{ book.author }}
+    {{ book.price }}
+    <br>
+
+    {% endfor %}
+     -->
+{% endblock %}

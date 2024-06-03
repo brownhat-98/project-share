@@ -1,0 +1,29 @@
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<h1>Update Order</h1>
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="userdash.html">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'userorders' user.customer.id %}">Orders</a></li>
+    <li class="breadcrumb-item active">Update Order</li>
+  </ol>
+</nav>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="card card-body pt-2">
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn-primary" type="submit">Submit</button>
+    </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

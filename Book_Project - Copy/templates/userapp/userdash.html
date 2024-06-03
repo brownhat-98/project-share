@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Archive</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+  
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  
+</head>
+<body>
+{% include 'userapp/topbar.html' %}    
+{% include 'userapp/sidebar.html' with pk=pk %}    
+
+
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle pt-4">
+{% block content %} 
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="userdash.html">Home</a></li>
+
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+
+<div class="row">
+    <div class="col-sm-4 mb-4 mb-sm-0">
+      <div class="card">
+        <div class="card-header text-center">Total Orders</div>
+        <div class="card-body text-center">
+          <h5 class="card-title ">{{ total_orders }}</h5>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4 mb-4 mb-sm-0">
+      <div class="card">
+        <div class="card-header text-center">Delivered</div>
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ delivered }}</h5>
+          
+        </div>
+      </div>
+    </div>
+     <div class="col-sm-4 mb-4 mb-sm-0">
+      <div class="card">
+        <div class="card-header text-center">Pending</div>
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ pending }}</h>
+        </div>
+      </div>
+    </div>
+</div>
+<br>
+
+
+<table class="table table-hover">
+    <thead class="table table-primary" >
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Status</th>
+        <th scope="col">Date Created</th>
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{ order.customer }}</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.date_created }}</td>
+            </tr>
+  
+        {% endfor %}
+  
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+<hr>
+<footer>footer</footer>
+
+
+
+ <!-- Vendor JS Files -->
+ <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
+ <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+ <script src="{% static 'assets/vendor/chart.js/chart.umd.js' %}"></script>
+ <script src="{% static 'assets/vendor/echarts/echarts.min.js' %}"></script>
+ <script src="{% static 'assets/vendor/quill/quill.min.js' %}"></script>
+ <script src="{% static 'assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+ <script src="{% static 'assets/vendor/tinymce/tinymce.min.js' %}"></script>
+ <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+ <!-- Template Main JS File -->
+ <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+</html>

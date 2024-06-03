@@ -1,0 +1,49 @@
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Edit Profile</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'userdash' %}">Home</a></li>
+            <li class="breadcrumb-item active">Edit Profile</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="form-group">
+                    <label for="{{ form.name.id_for_label }}">Name:</label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">Phone:</label>
+                    {{ form.phone }}
+                    {{ form.phone.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.profile_pic.id_for_label }}">Profile Picture:</label>
+                    {% if form.instance.profile_pic %}
+                    <img src="{{ form.instance.profile_pic.url }}" alt="Current Profile Picture">
+                    {% endif %}
+                    {{ form.profile_pic }}
+                    {{ form.profile_pic.errors }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

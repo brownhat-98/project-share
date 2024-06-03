@@ -1,0 +1,136 @@
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{request.user}}'s Cart</h1>
+    </div>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'userdash' %}">Home</a></li>
+            <li class="breadcrumb-item active">Cart Summary</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>{{request.user}}'s Cart &ensp;&ensp;&ensp;&ensp;&ensp; Items in Cart : {{ cart|length }}</h1>
+        <button class="btn btn-primary" id="place-order-button">Place Order</button>
+    </div>
+
+    {% if cart_products %}
+        {% for product in cart_products %}
+            <div class="card shadow-sm pt-3 mb-3">
+                <div class="card-body row">
+                    <div class="col-md-3">
+                        <img class="img-thumbnail" src="{{product.cover_url}}" alt="">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-text">
+                            <p><strong>Book Title:</strong> {{ product.title }}</p>
+                            <p><strong>Author:</strong> {{ product.author }}</p>
+                            <p><strong>Price:</strong> {{ product.price }}</p>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control quantity-input" id="quantity-{{ product.id }}" value="{{ product.quantity }}" min="1">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary update-cart" data-product-id="{{ product.id }}">Update</button>
+                                    <button type="button" class="btn btn-outline-danger delete-cart" data-product-id="{{ product.id }}">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card align-items-center">Cart Empty</div>
+    {% endif %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var cartUpdateUrl = "{% url 'cart_update' %}";
+            var cartDeleteUrl = "{% url 'cart_delete' %}";
+            var placeOrderUrl = "{% url 'place_order' %}";
+            const csrftoken = getCookie('csrftoken');
+
+            $('#place-order-button').click(function(event) {
+                event.preventDefault();
+                window.location.href = placeOrderUrl;
+            });
+
+            $(document).on('click', '.update-cart', function(event) {
+                event.preventDefault();
+                var productId = $(this).data('product-id');
+                var quantity = $('#quantity-' + productId).val();
+                var button = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: cartUpdateUrl,
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    data: {
+                        product_id: productId,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            button.removeClass('btn-outline-secondary').addClass('btn-success').text('Updated');
+                            console.log(response.message);
+                            $('#cart_qty').text(response.qty);
+                        } else {
+                            console.error(response.message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error(errmsg);
+                    }
+                });
+            });
+
+            $(document).on('click', '.delete-cart', function(event) {
+                event.preventDefault();
+                var productId = $(this).data('product-id');
+                var button = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: cartDeleteUrl,
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            button.closest('.card').remove();
+                            console.log(response.message);
+                            $('#cart_qty').text(response.qty);
+                        } else {
+                            console.error(response.message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error(errmsg);
+                    }
+                });
+            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+{% endblock %}

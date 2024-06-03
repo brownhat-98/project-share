@@ -1,0 +1,64 @@
+
+{% load static %}
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Username</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">email</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for user in page %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                
+            </tr>
+  
+        {% endfor %}
+  
+    </tbody>
+</table>
+
+
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if page.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+      {% endif %}
+
+      {% for num in page.paginator.page_range %}
+
+    <li class="page-item {% if page.number == num %}active{% endif %}" >
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+    </li>
+
+      {% endfor %}
+
+
+      {% if page.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+      {% endif %}
+ 
+  </ul>
+</nav>
+
+
+

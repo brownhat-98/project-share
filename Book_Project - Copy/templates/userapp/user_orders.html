@@ -1,0 +1,85 @@
+
+{% extends 'userapp/userdash.html' %}
+{% load static %}
+
+
+
+{% block content %}
+      <h1>Orders</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="userdash.html">Home</a></li>
+          <li class="breadcrumb-item active">Orders</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="row">
+  <div class="col-sm-4 mb-4 mb-sm-0">
+    <div class="card">
+      <div class="card-header text-center">Total Orders</div>
+      <div class="card-body text-center">
+        <h5 class="card-title ">{{ total_orders }}</h5>
+        <a href="#" class="btn btn-primary text-end">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 mb-4 mb-sm-0">
+    <div class="card">
+      <div class="card-header text-center">Delivered</div>
+      <div class="card-body text-center">
+        <h5 class="card-title">{{ delivered }}</h5>
+        <a href="#" class="btn btn-primary text-end">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+   <div class="col-sm-4 mb-4 mb-sm-0">
+    <div class="card">
+      <div class="card-header text-center">Pending</div>
+      <div class="card-body text-center">
+        <h5 class="card-title">{{ pending }}</h5>
+        <a href="#" class="btn btn-primary ">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+  <div class="container d-flex flex">
+    <a href="{% url 'createorder' customer.id %}" class="btn btn-primary btn-lg">Create Order</a>
+    
+  </div>
+</div>
+
+<br>
+
+
+<table class="table table-hover">
+    <thead class="table table-primary">
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Status</th>
+        <th scope="col">Date Created</th>
+        <th scope="col">&ensp;</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{ order.customer }}</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.date_created }}</td>
+                <td><a  href="{% url 'updateorder' order.id %}" class="btn btn-outline-warning">Update</a></td>
+                <td><a  href="{% url 'deleteorder' order.id %}" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+  
+        {% endfor %}
+  
+    </tbody>
+</table>
+
+{% endblock %}
