@@ -279,6 +279,7 @@ def admindash(request):
 
 
 #____________________________________________________________BASE
+@login_required(login_url='login')
 @loggeduser
 def base(request):
 
