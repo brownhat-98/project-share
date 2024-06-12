@@ -14,7 +14,6 @@ from bookapp.decorators import *
 # Create your views here.
 #____________________________________________________________USERDASH
 @login_required(login_url='login')
-@loggeduser
 def userdash(request):
     user = request.user.customer
     pk=user.id
@@ -130,7 +129,7 @@ def delete_order(request, pk):
         order.delete()
         return redirect(url)
     context = {'order': order}
-    return render(request, 'userapp/deleteorder.html', context)
+    return render(request,'userapp/deleteorder.html', context)
 
 
 #____________________________________________________________CARTADD
@@ -138,30 +137,34 @@ def delete_order(request, pk):
 def cart_add(request):
     cart = Cart(request)
 
-    print("Request method:", request.method)  # Debugging line
-    print("Request POST data:", request.POST)  # Debugging line
-
     if request.method == 'POST' and request.POST.get('action') == 'post':
         product_id = int(request.POST.get('product_id'))
         product = get_object_or_404(Book, id=product_id)
-        cart.add(product=product)
-        cart_qty = cart.__len__()
+        quantity = int(request.POST.get('quantity')) 
+        cart.add(product=product, quantity=quantity) 
+        cart_qty = len(cart)
 
-        return JsonResponse({'qty': cart_qty,'success': True, 'message': 'Product added to cart successfully.'})
+        return JsonResponse({'qty': cart_qty, 'success': True, 'message': 'Product added to cart successfully.'})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request.'})
-
-
+    
 
 #____________________________________________________________CARTSUMMARY
 @login_required(login_url='login')    
 def cart_sum(request):
     cart = Cart(request)
-    cart_products = cart.get_product
+    cart_products = cart.get_products()
+    
+    for product in cart_products:
+        product.quantity = cart.get_quantity(product.id)
 
-    context = {'cart_products':cart_products}
-    return render(request, 'userapp/user_cart.html', context)
-
+    total_price=sum(product.price*product.quantity for product in cart_products)    
+    
+    context = {
+        'cart_products': cart_products,
+        'total_price':total_price
+    }
+    return render(request,'userapp/user_cart.html', context)
 
 
 #____________________________________________________________CARTUPDATE
@@ -213,6 +216,6 @@ def place_order(request):
         return redirect('userorders', pk=customer.id)
 
     context = {
-        'cart_products': cart.get_product()
+        'cart_products': cart.get_products()
     }
     return render(request, 'userapp/place_order.html', context)

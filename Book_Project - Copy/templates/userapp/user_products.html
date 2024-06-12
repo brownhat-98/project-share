@@ -7,6 +7,9 @@
             <li class="breadcrumb-item"><a href="{% url 'userdash' %}">Home</a></li>
             <li class="breadcrumb-item active">Products</li>
         </ol>
+        {% if is_admin %}
+        <a href="{% url 'listview' %}" class="btn btn-outline-primary">Edit Products</a>
+        {% endif %}
     </nav>
     {% for product in products %}
     <div class="card shadow-sm pt-3">
@@ -18,25 +21,32 @@
                 <p>Author : {{ product.author }}</p>
                 <p>Price : {{ product.price }}</p>
                 <br>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Quantity</span>
+                    </div>
+                    <input type="number" class="form-control quantity-input" id="quantity-{{ product.id }}" value="1" min="1">
+                </div>
                 
-                <button type="button" class="btn btn-outline-primary add-to-cart" 
-                                    data-product-id="{{ product.id }}">Add to cart</button>
+                <button type="button" class="btn btn-outline-primary add-to-cart" data-product-id="{{ product.id }}">Add to cart</button>
+                <br>
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
 
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            var cartAddUrl = "{% url 'cart_add' %}";  // Resolve the URL here
-            const csrftoken = getCookie('csrftoken');  // Ensure CSRF token is available
+            var cartAddUrl = "{% url 'cart_add' %}";
+            const csrftoken = getCookie('csrftoken');
 
             $(document).on('click', '.add-to-cart', function(event) {
                 event.preventDefault();
                 var productId = $(this).data('product-id');
+                var quantity = $('#quantity-' + productId).val();
                 var button = $(this);
 
                 $.ajax({
@@ -47,17 +57,15 @@
                     },
                     data: {
                         product_id: productId,
+                        quantity: quantity,
                         action: 'post'
                     },
                     success: function(response) {
-                        document.getElementById("cart_qty")
-                        textContent = response.qty
-
+                        document.getElementById("cart_qty").textContent = response.qty;
+                    
                         if (response.success) {
                             button.removeClass('btn-outline-primary').addClass('btn-success').text('Added to cart');
                             console.log(response.message);
-
-                            document.getElementById("cart_qty").textContent = response.qty;
                         } else {
                             console.error(response.message);
                         }
@@ -67,21 +75,21 @@
                     }
                 });
             });
-        });
 
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
                     }
                 }
+                return cookieValue;
             }
-            return cookieValue;
-        }
+        });
     </script>
 {% endblock %}

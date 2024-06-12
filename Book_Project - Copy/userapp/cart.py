@@ -9,15 +9,15 @@ class Cart:
         else:
             self.cart = self.session.get('cart', {})
 
-    def add(self, product):
+    def add(self, product, quantity=1):
         product_id = str(product.id) 
 
         if product_id in self.cart:
-            self.cart[product_id]['quantity'] += 1
+            self.cart[product_id]['quantity'] += quantity
         else:
             self.cart[product_id] = {
                 'price': product.price,
-                'quantity': 1
+                'quantity': quantity
             }
 
         self.session['cart'] = self.cart
@@ -26,11 +26,15 @@ class Cart:
     def __len__(self):
         return len(self.cart) 
     
-    def get_product(self):
-        product_ids= self.cart.keys()
+    def get_quantity(self, product_id=1):
+        return self.cart.get(str(product_id), {}).get('quantity', 0)
+
+    def get_products(self):
+        product_ids = self.cart.keys()
         products = Book.objects.filter(id__in=product_ids)
-        return products
     
+        return products
+
 
     def update(self, product, quantity):
         product_id = str(product.id)
