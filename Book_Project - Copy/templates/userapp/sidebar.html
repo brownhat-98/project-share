@@ -10,12 +10,36 @@
           <span>Books</span>
         </a>
       </li><!-- End Dashboard Nav -->
-
+      {% if is_admin %}
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>User Pages</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide"></i><span>Admin Pages</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+              <a href="{% url 'admindash' %}">
+              <i class="bi bi-circle"></i><span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'userproducts' %}">
+              <i class="bi bi-circle"></i><span>Products</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="{% url 'userdetails' %}">
+              <i class="bi bi-circle"></i><span>User Details</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>User Pages</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li></li>
             <a href="/user/dash">
               <i class="bi bi-circle"></i><span>Dashboard</span>

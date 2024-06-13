@@ -4,12 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
+from django.conf import settings
 
 from .models import *
 from .forms import OrderForm,EditProfileForm
 from bookapp.models import *
 from userapp.cart import *
 from bookapp.decorators import *
+import stripe
 
 # Create your views here.
 #____________________________________________________________USERDASH
@@ -205,13 +207,15 @@ def place_order(request):
     customer = request.user.customer
 
     if request.method == 'POST':
-        for item in cart.get_product():
+
+        for item in cart.get_products():
             order = Order.objects.create(
                 customer=customer,
                 product=item,
                 quantity=cart.cart[str(item.id)]['quantity'],
                 status='Pending'
             )
+
         cart.clear()
         return redirect('userorders', pk=customer.id)
 
@@ -219,3 +223,60 @@ def place_order(request):
         'cart_products': cart.get_products()
     }
     return render(request, 'userapp/place_order.html', context)
+
+
+#____________________________________________________________PAYMENTGATEWAY
+def create_checkout_session(request):
+    cart = Cart(request)
+
+    if request.method == 'POST':
+        line_items=[]
+        stripe.api_key=settings.STRIPE_SECRET_KEY
+
+        for item in cart.get_products():
+
+            if item:
+                line_item={
+                    'price_data':{
+                        'currency':'INR',
+                        'unit_amount':int(item.price *100),
+                        'product_data':{
+                            'name':item.title
+                        },
+                    },
+                    'quantity':cart.get_quantity(item.id)
+                }
+                line_items.append(line_item)
+
+
+        if line_items:
+            checkout_session=stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=line_items,
+                mode='payment',
+                success_url=request.build_absolute_uri(reverse('success')),
+                cancel_url=request.build_absolute_uri(reverse('cancel'))
+            )
+            return redirect(checkout_session.url,code=303)
+
+#____________________________________________________________PAYMENTSUCCESS
+def success(request):
+    cart = Cart(request)
+    cart_items=cart.get_products()
+
+    for item in cart_items:
+        product=item
+        if product.quantity>=cart.get_quantity(item.id):
+            product.quantity-=cart.get_quantity(item.id)
+            product.save()
+
+    # cart_items.delete()
+    cart.clear()
+
+    return render(request,'userapp/success.html')
+
+
+
+#____________________________________________________________PAYMENTFAIL
+def cancel(request):
+    return render(request,'userapp/cancel.html')

@@ -21,7 +21,7 @@ class Cart:
             }
 
         self.session['cart'] = self.cart
-        self.session.modified = True
+        self.session.modified = True 
 
     def __len__(self):
         return len(self.cart) 

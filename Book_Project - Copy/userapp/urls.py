@@ -18,6 +18,8 @@ urlpatterns = [
     path("cart/update/", views.cart_update, name='cart_update'),
     path("cart/delete/", views.cart_delete, name='cart_delete'),
     path('cart/place_order/', views.place_order, name='place_order'),
-
+    path("create-checkout-session/", views.create_checkout_session, name='create-checkout-session'),
+    path("success/", views.success, name='success'),
+    path("cancel/", views.cancel, name='cancel'),
 
 ]
