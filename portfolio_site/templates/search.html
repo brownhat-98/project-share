@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Search Results for "{{ query }}"</h1>
+        
+        <div class="list-group">
+            {% if portfolios %}
+                {% for portfolio in portfolios %}
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ portfolio.title }}</h5>
+                        <p class="mb-1">Owner: {{ portfolio.user_profile.name }}</p>
+                        <a href="{% url 'portfolio_view' portfolio.id %}" class="btn btn-link text-left">View Portfolio</a>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <div class="list-group-item">
+                    No portfolios found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

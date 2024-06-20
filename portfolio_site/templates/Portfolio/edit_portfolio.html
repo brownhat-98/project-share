@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex-container p-5">
+    <h1 class="text-primary">Edit Portfolio</h1>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+
+        {% if portfolio_form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                {% for field in portfolio_form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+         
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit User Profile</a></td></h3>
+         
+        <div class="card p-4">
+            <div class="form-group card-body">
+                <label for="{{ portfolio_form.bio.id_for_label }}">Bio:</label>
+                {{ portfolio_form.bio }}
+            </div>
+            <div class="form-group card-body">
+                <label for="{{ portfolio_form.skills.id_for_label }}">Skills:</label>
+                {{ portfolio_form.skills }}
+            </div>
+            <div class="form-group card-body">
+                <label for="{{ portfolio_form.education.id_for_label }}">Education:</label>
+                {{ portfolio_form.education }}
+            </div>
+            
+
+            <h3>Custom Fields</h3>
+            {% if custom_fields %}
+                {% for field in custom_fields %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label for="id_custom_field_name_{{ field.id }}">Field Name:</label>
+                                <input type="text" id="id_custom_field_name_{{ field.id }}" name="custom_field_name_{{ field.id }}" class="form-control" value="{{ field.field_name }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_custom_field_value_{{ field.id }}">Field Value:</label>
+                                <input type="text" id="id_custom_field_value_{{ field.id }}" name="custom_field_value_{{ field.id }}" class="form-control" value="{{ field.field_value }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="id_custom_field_image_{{ field.id }}">Field Image:</label>
+                                {% if field.field_image %}
+                                    <img style="height: 20rem;" id="custom_field_image_preview_{{ field.id }}" src="{{ field.field_image.url }}" alt="{{ field.field_name }} image" class="img-fluid mb-2">
+                                {% else %}
+                                    <img style="height: 20rem;" id="custom_field_image_preview_{{ field.id }}" src="#" alt="Placeholder" class="img-fluid mb-2 d-none">
+                                {% endif %}
+                                <input type="file" id="id_custom_field_image_{{ field.id }}" name="custom_field_image_{{ field.id }}" class="form-control-file" onchange="previewImage(this, 'custom_field_image_preview_{{ field.id }}')">
+                            </div>
+
+                            <a href="{% url 'delete_custom_field' field.id %}" class="btn btn-sm btn-outline-danger">Delete Field</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No custom fields added yet.</p>
+            {% endif %}
+         </div>
+        
+
+
+        <p><a class="btn btn-secondary" href="{% url 'add_custom_field' %}">Add Custom Field</a></p>
+        
+        <button type="submit" name="save_portfolio" class="btn btn-primary">Save Portfolio</button>
+    </form>
+</div>
+
+<script>
+    function previewImage(input, imgId) {
+        var imgElement = document.getElementById(imgId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                imgElement.src = e.target.result;
+                imgElement.classList.remove('d-none'); // Show the image element
+            }
+            reader.readAsDataURL(input.files[0]); // Read the uploaded file as a data URL
+        } else {
+            imgElement.src = '#';
+            imgElement.classList.add('d-none'); // Hide the image element
+        }
+    }
+</script>
+
+{% endblock %}

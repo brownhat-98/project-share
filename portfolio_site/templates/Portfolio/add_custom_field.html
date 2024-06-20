@@ -1,0 +1,26 @@
+<!-- add_custom_field.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Add Custom Field</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ custom_field_form.field_name.id_for_label }}">Field Name:</label>
+            {{ custom_field_form.field_name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ custom_field_form.field_value.id_for_label }}">Field Value:</label>
+            {{ custom_field_form.field_value }}
+        </div>
+        <div class="form-group">
+            <label for="{{ custom_field_form.field_image.id_for_label }}">Field Image:</label>
+            {{ custom_field_form.field_image }}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Custom Field</button>
+    </form>
+</div>
+{% endblock %}

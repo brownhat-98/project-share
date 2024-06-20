@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+
+<style>
+  .card-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px; 
+  }
+
+  .card {
+      flex: 1 1 calc(33.33% - 20px);
+      margin-bottom: 1px;
+  }
+
+  .card-body {
+      display: flex;
+      align-items: center;
+  }
+
+  .profile-pic {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+  }
+
+  .user-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container p-2">
+
+  <h3>Interns</h3>
+  <div class="card-group">
+      {% for profile in user_profiles %}
+          <div class="card">
+              <div class="card-body align-items-center">
+                  <img style="height : 150px;" src="{% if profile.profile_pic %}{{ profile.profile_pic.url }}{% else %}{% static 'img/profile-img-lh.jpg' %}{% endif %}" alt="Profile Picture" class="rounded">
+                  <div class="user-info">
+                      <h5 class="card-title">{{ profile.name }}</h5>
+                      <p class="card-text"><strong>Skills:</strong>
+                          {% if profile.portfolio_set.all %}
+                              {% for portfolio in profile.portfolio_set.all %}
+                                  {{ portfolio.skills }}
+                                  {% if not forloop.last %}, {% endif %}
+                              
+                      </p>
+                      <p class="card-text"><strong>Email:</strong> {{ profile.email }}</p>
+                      <p class="card-text"><strong>Phone:</strong> {{ profile.phone }}</p>
+                      <a href="{% url 'portfolio_view' portfolio.id %}" class="btn btn-link text-left">View Portfolio</a>
+                      {% endfor %}
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+  </div>
+
+  <div class="container  p-1">
+    <h2 class="text-primary">Intern Project Examples</h2>
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-interval="3000">
+      <div class="carousel-inner">
+        {% for image in project_images %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <h3>Project : {{ image.project.title }}</h3>
+          <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.name }}">        
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Document is ready");
+    var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+    console.log("Carousel Element:", myCarousel);
+    var carousel = new bootstrap.Carousel(myCarousel, {
+      interval: 4000,
+      ride: 'carousel'
+    });
+    console.log("Carousel initialized:", carousel);
+  });
+</script>
+{% endblock %}
+
+{% endblock %}

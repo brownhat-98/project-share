@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container p-1">
+    <h1 class="text-primary">{{ project.title }}</h1>
+    <p>{{ project.description }}</p>
+    {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid">
+    {% endif %}
+    <br> <br>
+    {% if project.link %}
+        <p><strong>Project Link:</strong> <a href="{{ project.link }}" target="_blank">{{ project.link }}</a></p>
+    {% endif %}
+
+    <div class="mt-4">
+        {% if is_admin or is_intern %}    
+        <a href="{% url 'edit_project' project.id %}" class="btn btn-link">Edit Project</a>
+        <form method="post" action="{% url 'delete_project' project.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link text-danger">Delete Project</button>
+        </form>
+        {% endif %}
+    </div>
+    <br>
+
+    <h2 class="text-primary">Project Images</h2>
+    <div class="row">
+        {% for image in images %}
+            <div class="col-md-4">
+                <h5>{{ image.name }}</h5>
+                <img src="{{ image.image.url }}" class="img-thumbnail" alt="Project Image">
+                {% if is_admin or is_intern %}    
+                <a href="{% url 'edit_project_image' project.id image.id %}" class="btn btn-secondary">Edit</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <br>
+    <h4>Upload a new image</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload Image</button>
+    </form>
+
+    
+</div>
+
+{% endblock %}

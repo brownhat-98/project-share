@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ form.instance.id|yesno:"Edit Certificate,Add Certificate" }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name:</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.certificate_pdf.id_for_label }}">Certificate PDF:</label>
+            {% if form.instance.certificate_pdf %}
+            <div style="height: 500px;">
+                <iframe src="{{ form.instance.certificate_pdf.url }}" style="width: 100%; height: 100%;" frameborder="0"></iframe>
+            </div>
+            {% endif %}
+            {{ form.certificate_pdf }}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.instance.id|yesno:"Save Changes,Add Certificate" }}</button>
+    </form>
+</div>
+{% endblock %}

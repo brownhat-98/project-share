@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intern Portfolio - Login</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+<!-- Section: Design Block -->
+<section class="">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+      <div class="container">
+        <div class="row gx-lg-5 align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="my-5 display-1 fw-bold ls-tight">
+              Inmakes Learning Hub <br />
+              <span class="text-primary">Intern Portfolio</span>
+            </h1>
+            <p style="color: hsl(217, 10%, 50.8%)">
+              
+            </p>
+          </div>
+          
+          <div class="col-lg-5 mb-5 mb-lg-0">
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                  <strong>Error:</strong> Please correct the following errors:
+                  <ul>
+                  {% for field, errors in form.errors.items %}
+                      {% for error in errors %}
+                          <li>{{ error }}</li>
+                      {% endfor %}
+                  {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      {{form.username}}
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                          {{form.first_name}}
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <div data-mdb-input-init class="form-outline">
+                          {{form.last_name}}
+                        </div>
+                      </div>
+                    </div>  
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      {{form.email}}
+                    </div>  
+                    <div class="form-group">
+                      {{form.password1}}
+                    </div>
+                    <div class="form-group">
+                      {{form.password2}}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+                </form>
+                <p>The password cannot be similar to the username.
+                  This password must contain at least 8 characters.
+                </p>
+              </div>
+           
+              <!-- Register buttons -->
+              <!-- Submit button -->
+              <p class="small mb-0">Already have an account?</p>
+              <a type="submit" class="btn btn-primary btn-block mb-4"href="{% url 'login' %}">Login</a>
+              <div class="text-center">
+                <p>or sign up with:</p>
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-facebook-f"></i>
+                </button>
+
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-google"></i>
+                </button>
+
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-twitter"></i>
+                </button>
+
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                  <i class="fab fa-github"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+</body>
+
+</html>

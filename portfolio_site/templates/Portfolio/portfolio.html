@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+
+<div class="container px-0 py-2 card mb-2">
+    <div class="px-2"> 
+        <h2 class="text-light py-2 px-3 bg-primary">{{ portfolio.user_profile.name }}'s Portfolio</h2>
+        {% if is_admin or is_intern %}
+        <a class="btn btn-link btn-sm" href="{% url 'edit_portfolio' %}">Edit Portfolio</a>
+        {% endif %}
+        <br><br>
+        
+
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body d-flex px-4 align-items-center">
+                    <img style="height: 200px;" 
+                    src="{% if profile.profile_pic %}{{ profile.profile_pic.url }}{% else %}{% static 'img/profile-img-lh.jpg' %}{% endif %}" 
+                    alt="Profile Picture" class="profile-pic m-3 rounded ">
+                    <div class="user-info px-5">
+                        <p class="card-title"><strong>Name : </strong>{{ profile.name }}</p>
+                        <p class="card-text"><strong>Skills : </strong>{{ portfolio.skills }}</p>
+                        <p class="card-text"><strong>Email : </strong> {{ profile.email }}</p>
+                        <p class="card-text"><strong>Phone : </strong> {{ profile.phone }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card-group">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Bio</strong></h5>
+                    <p class="card-text">{{ portfolio.bio }}</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Skills</strong></h5>
+                    <p class="card-text">{{ portfolio.skills }}</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Education</strong></h5>
+                    <p class="card-text">{{ portfolio.education }}</p>
+                </div>
+            </div>
+        </div>
+
+        {% if portfolio.customfield_set.all %}
+            {% for field in portfolio.customfield_set.all %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ field.field_name }}</strong></h5>
+                        <p class="card-text">{{ field.field_value }}</p>
+                        {% if field.field_image %}
+                            <img style="height: 200px;" src="{{ field.field_image.url }}" alt="{{ field.field_name }} image" class="rounded float-start img-thumbnail">
+                        {% endif %}
+                    </div>
+                </div>
+             {% endfor %}
+        {% endif %}
+    <br>        
+
+    <h3 class="text-primary bg-primary-outline px-2">Certificates</h3>
+    <hr>
+    {% if is_admin or is_intern %}
+    <a href="{% url 'certificate_add' %}" class="btn btn-link">Add Certificate</a>
+    {% endif %}
+    <div class="row">
+        {% for certificate in certificates %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{ certificate.name }}</h5>
+                    <a href="{% url 'certificate_detail' certificate.id %}">View</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+<br>    
+
+    <h3 class="text-primary px-2">Projects</h3>
+    <hr>
+    {% if is_admin or is_intern %}
+    <a class="btn btn-link" href="{% url 'add_project' %}">Add New Project</a>
+    {% endif %}
+        <div class="card-group">
+            {% for project in projects %}
+            <div class="card">
+                <div class="card-body">
+                    <h4>{{ project.title }}</h4>
+                    <p>{{ project.description }}</p>
+                    <a class="btn btn-link" href="{% url 'project_detail' project.id %}">View Project</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    <br>
+    
+</div>
+{% endblock %}

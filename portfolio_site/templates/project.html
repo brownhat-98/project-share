@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-1">
+  <h2 class="text-primary">{{ request.user }}'s Project Examples</h2>
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-interval="3000">
+    <div class="carousel-inner">
+      {% for image in project_images %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <h3>Project : {{ image.project.title }}</h3>
+        <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.name }}">        
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+<h3 class="text-primary px-2">Projects</h3>
+    <hr>
+    {% if is_admin or is_intern %}
+    <a class="btn btn-link" href="{% url 'add_project' %}">Add New Project</a>
+    {% endif %}
+        <div class="card-group">
+            {% for project in projects %}
+            <div class="card">
+                <div class="card-body">
+                    <h4>{{ project.title }}</h4>
+                    <p>{{ project.description }}</p>
+                    <a class="btn btn-link" href="{% url 'project_detail' project.id %}">View Project</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    <br>
+  </div>
+    
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Document is ready");
+    var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+    console.log("Carousel Element:", myCarousel);
+    var carousel = new bootstrap.Carousel(myCarousel, {
+      interval: 4000,
+      ride: 'carousel'
+    });
+    console.log("Carousel initialized:", carousel);
+  });
+</script>
+{% endblock %}
+
