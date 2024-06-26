@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container px-5">
+    <div class="card bg-gray-400 text-white" >
+        <div class="card-header text-dark">
+            <h2 class="text-dark" >Edit Destination</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+            <div class="card-body" >
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                            <!-- Destination Name -->
+                            <div class="form-group row">
+                                <label for="{{ form.name.id_for_label }}" class="col-sm-2 col-form-label">Name:</label>
+                                <div class="col-sm-10">
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="form-group row">
+                                <label for="{{ form.description.id_for_label }}" class="col-sm-2 col-form-label">Description:</label>
+                                <div class="col-sm-10">
+                                    {{ form.description }}
+                                </div>
+                            </div>
+                            
+                            <!-- Weather -->
+                            <div class="form-group row">
+                                <label for="{{ form.weather.id_for_label }}" class="col-sm-2 col-form-label">Weather:</label>
+                                <div class="col-sm-10">
+                                    {{ form.weather }}
+                                </div>
+                            </div>
+                            
+                            <!-- Country -->
+                            <div class="form-group row">
+                                <label for="{{ form.country.id_for_label }}" class="col-sm-2 col-form-label">Country:</label>
+                                <div class="col-sm-10">
+                                    {{ form.country }}
+                                </div>
+                            </div>
+                            
+                            <!-- Main Image -->
+                            <div class="form-group row">
+                                <label for="{{ form.image.id_for_label }}" class="col-sm-2 col-form-label">Main Image:</label>
+                                <div class="col-sm-10">
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                            
+                            <!-- Location -->
+                            <div class="form-group row">
+                                <label for="{{ form.location.id_for_label }}" class="col-sm-2 col-form-label">Location:</label>
+                                <div class="col-sm-10">
+                                    {{ form.location }}
+                                </div>
+                            </div>
+                            
+                            <!-- gmap -->
+                            <div class="form-group row">
+                                <label for="{{ form.gmap.id_for_label }}" class="col-sm-2 col-form-label">Gmap link:</label>
+                                <div class="col-sm-10">
+                                    {{ form.gmap }}
+                                </div>
+                            </div>
+                            
+                            <!-- Form for uploading destination images -->
+                            <div class="form-group row">
+                                <label for="{{ image_form.images.id_for_label }}" class="col-sm-2 col-form-label">Image:</label>
+                                <div class="col-sm-10">
+                                    {{ image_form.images }}
+                                </div>
+                            </div>
+                    
+                            <!-- Submit Button -->
+                            <div class="form-group row">
+                                <div class="col-sm-10 offset-sm-2">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>    
+            </div>
+    
+        </div>
+    </div>
+            
+{% endblock %}            

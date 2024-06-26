@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container p-5 px-5">
+        <div class="card bg-gray-400 text-white" >
+            {% if messages %}   
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            <div class="card-header text-dark">
+                <h2>Delete Destination</h2>
+                <p>Are you sure you want to delete destination <strong>{{ destination.name }}</strong>?</p>
+                <img style="width: 30rem;" src="{{ destination.image }}" alt="">
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    <a href="{% url 'view_dest' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+{% endblock %}    

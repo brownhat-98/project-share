@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container px-5" >
+        {% if messages %}   
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% for destination in destinations %}
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="row gx-4 gx-lg-5 align-items-center">
+                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ destination.image }}" alt="..." /></div>
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-bolder">{{ destination.name }}</h1>
+                        <div class="fs-5 mb-5">
+                            <span>{{ destination.location }}, {{ destination.country }}</span>
+                        </div>
+                        <p class="lead">{{ destination.description }}</p>
+                        <div class="d-flex">
+                            <button class="btn btn-outline-primary flex-shrink-0" type="button">
+                                <a class="btn btn-link text-dark" href="{% url 'detail_dest' destination.id %}">View</a>
+                            </button>
+                            &ensp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}    
+        </section>
+        <div class=" align-items-end">
+            <button class="btn btn-outline-dark flex-shrink-0 " type="button"></button>
+                <a href="{% url 'add_dest' %}">Add Destination</a>
+            </button>
+        </div>
+    </div>
+        
+        
+        
+        <br><br><br><br><br><br><br><br>
+
+{% endblock %}        

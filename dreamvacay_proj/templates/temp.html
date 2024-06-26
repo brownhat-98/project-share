@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="card bg-secondary bg-transparent text-secondary " >
+            <div class="card-header">
+                <h2>Edit Destination</h2>
+                <h1>Edit Destination</h1>
+    
+                {% if messages %}
+                    {% for message in messages %}
+                        <div>{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            
+                <form method="post" enctype="multipart/form-data" action="{% url 'edit_destination' pk=destination.pk %}"></form>>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

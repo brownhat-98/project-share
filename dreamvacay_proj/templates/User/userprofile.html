@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container pt-4">
+    <h1 class="my-4">User Profile</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Profile Picture</h5>
+                    {% if userprofile.profile_pic %}
+                        <img src="{{ userprofile.profile_pic.url }}" alt="Profile Picture" class="img-fluid mb-3">
+                    {% else %}
+                        <p class="text-muted">No profile picture available</p>
+                    {% endif %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile Picture</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Information</h5>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Name:</th>
+                                <td>{{ userprofile.name }}</td>
+                                <td><a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email:</th>
+                                <td>{{ userprofile.email }}</td>
+                                <td><a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Phone:</th>
+                                <td>{{ userprofile.phone }}</td>
+                                <td><a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Account Creation Date:</th>
+                                <td>{{ userprofile.date_created }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% for message in messages %}
+                    <p id="message">{{ message }}</p>
+                    {% endfor %} 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+{% endblock %}

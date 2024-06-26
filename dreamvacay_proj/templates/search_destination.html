@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container px-5">
+    <div class="card bg-gray-400 text-white" >
+        <div class="card-header text-dark">
+            <h2 class="text-secondary" >Available Locations</h2>
+    
+    {% if messages %}   
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+            <div class="card-body align-items-center justify-content-center">
+
+            {% if destinations %}
+                {% for destination in destinations %}
+                    <div>
+                        <h2 class="text-secondary">{{ destination.name }}</h2>
+                        <p>{{ destination.description }}</p>
+                        <img  style="width: 50rem;" src="{{ destination.image }}" alt="Destination Image">
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p>No destinations found.</p>
+            {% endif %}
+            </div>
+            <div class=" align-items-end">
+                <button class="btn btn-outline-dark flex-shrink-0 " type="button"></button>
+                    <a href="{% url 'add_dest' %}">Add Destination</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>    
+<br>
+{% endblock %}

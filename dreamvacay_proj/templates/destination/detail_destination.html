@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if destination %}
+<section class="py-5">
+    <div class="container px-2 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6 align-items-center mt-5">
+                <img class="card-img-top mt-5 mb-0" src="{{ destination.image }}" alt="..." />
+                <div class="weather-box">
+                    {% if weather %}
+                        <p>&ensp;&ensp; Description: {{ weather.description }}
+                           <img src="http://openweathermap.org/img/wn/{{ weather.icon }}.png" alt="Weather Icon"></p>
+                        Temperature: {{ weather.temp }} °C
+                        Humidity: {{ weather.humidity }}%
+                    {% else %}
+                        <p>Weather data not available.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6 mt-0">
+                <h1 class="display-5 fw-bolder">{{ destination.name }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>{{ destination.location }}, {{ destination.country }}</span>
+                </div>
+                <div class="fs-5 mb-5">
+                    <p class="lead">{{ destination.description }}</p>
+                    <p class="lead">The climate in {{ destination.name }} is {{ destination.weather }}</p>
+                    <p class="lead">The google map link to Osaka is <a href="{{ destination.gmap }}" target="_blank">{{ destination.name }}</a></p>
+                </div>
+                <!-- <div class="weather-box overlay">
+                    {% if weather %}
+                        <h4 class=" fw-light">Current Weather in {{ destination.name }}</h5>
+                        <p>Description: {{ weather.description }}
+                           <img src="http://openweathermap.org/img/wn/{{ weather.icon }}.png" alt="Weather Icon"></p>
+                        <p>Temperature: {{ weather.temp }} °C</p>
+                        <p>Humidity: {{ weather.humidity }}%</p>
+                    {% else %}
+                        <p>Weather data not available.</p>
+                    {% endif %}
+                </div> -->
+
+                <div class="">
+                    <button class="btn btn-outline-primary flex-shrink-0" type="button">
+                        <a class="btn btn-link text-dark" href="{% url 'edit_dest' destination.id %}">Edit</a>
+                    </button>
+                    &ensp;
+                    <button class="btn btn-outline-danger flex-shrink-0" type="button">
+                        <a class="btn btn-link text-dark" href="{% url 'delete_dest' destination.id %}">Delete</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+<div>
+    {% for image in images %}
+        <img class="card-img-top mt-5 mb-0" src="{{ image.images.url }}" alt="..." />
+    {% endfor %}
+</div>
+
+<br><br><br><br><br><br><br><br><br><br>
+
+<style>
+    .weather-box {
+    position: relative;
+    top: 0%; /* Adjust position from top */
+    left: 50%; /* Adjust position from left */
+    transform: translate(-50%, -100%); /* Center align the overlay */
+    background-color: rgba(0,0,0, 0.3); /* Semi-transparent background */
+    color: white; /* Text color */
+    padding: 5px; /* Padding around content */
+    text-align: center; /* Center align text */
+    width: 100%; /* Full width */
+}
+
+
+</style>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dream Vacay</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet" />
+
+        
+    </head>
+    <body>
+        {% block auth %}
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary bg-light">
+            <div class="container px-4 px-lg-5 container-fluid">
+                <a style="font-family: Helvetica;" class="navbar-brand" href="{% url 'base' %}">Dream Vacation</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'view_dest' %}">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">View Options</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% if is_admin %}
+                                <li><a class="dropdown-item" href="{% url 'api_add_dest' %}">API-Add Destination</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider" /></li>
+                            
+                                <li><a class="dropdown-item" href="{% url 'add_dest' %}">Add Destination</a></li>
+
+                                <li><a class="dropdown-item" href="{% url 'view_dest' %}">View Destination</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="nav-item container-fluid align-items-end">
+                        <form method="post" action="{% url 'search_dest' %}" class="d-flex" role="search">
+                            {% csrf_token %}
+                            <input type="search" name="search_term" id="search_term" aria-label="Search" placeholder="Search Locations..." >
+                          <button type="submit" class="btn btn-secondary"><i class="bi bi-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="nav-item dropdown pe-3">
+
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                          {% if request.user.userprofile.profile_pic %}
+                              <img style="width: 2.5rem; height: 2.5rem;" src="{{ request.user.userprofile.profile_pic.url }}" alt="Profile" class="rounded-circle">
+                          {% else %}
+                              <img style="width: 2.5rem; height: 2.5rem;" src="{% static 'assets/img/user_avatar.jpeg' %}" alt="Profile" class="rounded-circle">
+                          {% endif %}
+                          <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user }}</span>
+                      </a>
+                      <!-- End Profile Image Icon -->
+              
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                          <div class="dropdown-header">
+                            <h6>{{ request.user }}</h6>
+                            <span>Account</span>
+                          </div>
+                          <div>
+                            <hr class="dropdown-divider">
+                          </div>
+                          <div>
+                            <a class="dropdown-item d-flex align-items-center" href="{% url 'user_profile' %}">
+                              <i class="bi bi-person"></i>
+                              <span>Profile</span>
+                            </a>
+                          </div>
+                          {% if user.is_authenticated %}
+                          <div>
+                            <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                              <i class="bi bi-box-arrow-right"></i>
+                              <span>Log Out</span>
+                            </a>
+                          </div>  
+                          {% else %}
+                          <div>
+                            <a class="dropdown-item d-flex align-items-center" href="{% url 'login' %}">
+                              <i class="bi bi-box-arrow-in-right"></i>
+                              <span>Login</span>
+                            </a>
+                          </div>
+                          {% endif %}
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </nav>
+
+
+
+        
+        {% block content %}
+
+        <div class="container py-5 px-5 bg-gray-400 ">
+            <div class="card bg-gray-400 px-4 py-4">
+                <div class="card-body">
+                    <h1 style="font-family: monospace;">Please Login To Continue</h1>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br>
+        {% endblock %}
+
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark footer">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+
+        {% endblock %}
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+            <!-- Include Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        
+    </body>
+</html>
+
+
+
+
