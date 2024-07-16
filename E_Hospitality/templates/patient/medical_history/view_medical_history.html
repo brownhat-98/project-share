@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="card mt-5">
+            <div class="card-header bg-danger text-white">
+              <h2 class="text-center ">View medical_history</h2>
+            </div>
+            <div class="card-body border border-danger">
+              <ul class="list-group text-justify">
+  
+                <li class="list-group-item">patient: {{ medical_history.patient }}</li>
+                <li class="list-group-item">description : {{ medical_history.description }}</li>
+                <li class="list-group-item">age: {{ medical_history.age }}</li>
+                <li class="list-group-item">gender: {{ medical_history.gender }}</li>
+                <li class="list-group-item">blood_group: {{ medical_history.blood_group }}</li>
+                <li class="list-group-item">height: {{ medical_history.height }}</li>
+                <li class="list-group-item">weight: {{ medical_history.weight }}</li>
+                <li class="list-group-item">allergies: {{ medical_history.allergies }}</li>
+                <li class="list-group-item">treatment_history: {{ medical_history.treatment_history }}</li>
+                <li class="list-group-item">date_created: {{ medical_history.date_created }}</li>
+
+  
+              </ul>
+              <a href="{% url 'edit_medical_history' medical_history.pk %}" class="btn btn-link text-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>  
+  
+  
+{% endblock %}

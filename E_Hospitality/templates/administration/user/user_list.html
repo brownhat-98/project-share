@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h2 class="text-center">User List</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for person in users %}
+                            <tr>
+                                <td>{{ person.id }}</td>
+                                <td>{{ person.username }}</td>
+                                <td>{{ person.email }}</td>
+                                <td>{{ person.role }}</td>
+                                <td>
+                                    <a href="{% url 'profile_view' person.id %}" class="btn btn-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+{% endblock %}

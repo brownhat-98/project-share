@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card mt-5">
+        <div class="card-header bg-danger text-white">
+          <h2 class="text-center">{{ profile.user.username }}'s Profile</h2>
+        </div>
+        <div class="card-body border border-danger">
+          <ul class="list-group text-justify">
+            <li class="list-group-item">Username: {{ profile.user.username }}</li>
+            <li class="list-group-item">Email: {{ profile.user.email }}</li>
+
+            {% if 'Admin' in user_groups %}
+              <li class="list-group-item">Name: {{ profile.name }}</li>
+              <li class="list-group-item">Phone: {{ profile.phone }}</li>
+              <li class="list-group-item">Address: {{ profile.address }}</li>
+            {% elif 'Doctor' in user_groups %}
+              <li class="list-group-item">Name: {{ profile.name }}</li>
+              <li class="list-group-item">Specialization: {{ profile.specialization }}</li>
+              <li class="list-group-item">License Number: {{ profile.license_number }}</li>
+              <li class="list-group-item">Phone: {{ profile.phone }}</li>
+              <li class="list-group-item">Address: {{ profile.address }}</li>
+            {% elif 'Patient' in user_groups %}
+              <li class="list-group-item">Name: {{ profile.name }}</li>
+              <li class="list-group-item">Phone: {{ profile.phone }}</li>
+              <li class="list-group-item">Address: {{ profile.address }}, {{ profile.city }}, {{ profile.state }}</li>
+              <li class="list-group-item">Medical History: {{ profile.medical_history }}</li>
+              <li class="list-group-item">Current Medications: {{ profile.current_medications }}</li>
+            {% endif %}
+            <li class="list-group-item">Role: {{ profile.role }}</li>
+          </ul>
+          <br>
+          <div class="display-flex d-md-flex justify-content-md-end">
+            <a href="{% url 'profile_edit' profile.user.id %}" class="btn btn-primary">Edit Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

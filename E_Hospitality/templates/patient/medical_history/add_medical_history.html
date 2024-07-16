@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card mt-5">
+        <div class="card-header bg-danger text-white">
+          <h2 class="text-center ">Add Medical History</h2>
+        </div>
+        <div class="card-body border border-danger">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Save Medical History</button>
+                </div>
+            </form>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

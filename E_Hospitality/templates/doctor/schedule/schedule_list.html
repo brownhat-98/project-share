@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}View schedules{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card mt-5">
+          <div class="card-header bg-danger text-white">
+            <h2 class="text-center ">schedule List</h2>
+          </div>
+          <div class="card-body border border-danger">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                    <tr>
+                        <td>{{ schedule.id }}</td>
+                        <td>{{ schedule.doctor }}</td>
+                        <td>{{ schedule.date }}</td>
+                        <td>{{ schedule.time }}</td>
+                        <td>{{ schedule.department }}</td>
+                        <td>
+                            <a href="{% url 'view_schedule' schedule.id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
+
+{% endblock %}

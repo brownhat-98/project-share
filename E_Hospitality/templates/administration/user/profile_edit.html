@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="card mt-5">
+        <div class="card-header bg-danger text-white">
+          <h2 class="text-center ">Edit Profile</h2>
+        </div>
+        <div class="card-body border border-danger">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <a class="d-flex text-warning justify-content-end" href="{% url 'password_change' %}">Change Password</a>
+            {% if user_roles.is_admin %}
+            <div class="mb-3">
+              <!-- <label for="roleSelect" class="form-label">Change Role</label>
+              <select id="roleSelect" class="form-select" onchange="window.location.href=this.value;">
+                <a value="" disabled selected>Select role</option>
+                <a value="{% url 'convert_user' profile.user.id 'Admin' %}">Convert to Admin</option>
+                <a value="{% url 'convert_user' profile.user.id 'Doctor' %}">Convert to Doctor</option>
+                <a value="{% url 'convert_user' profile.user.id 'Patient' %}">Convert to Patient</option>
+              </select> -->
+              <a class="btn btn-warning" href="{% url 'confirm_convert' profile.user.id %}">Convert Roles</a>
+
+            </div>
+            {% endif %}
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </div>
+          </form>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

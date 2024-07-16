@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="card mt-5">
+            <div class="card-header bg-danger text-white">
+              <h2 class="text-center ">View Schedule</h2>
+            </div>
+            <div class="card-body border border-danger">
+              <ul class="list-group text-justify">
+  
+                <li class="list-group-item">Doctor: {{ schedule.doctor }}</li>
+                <li class="list-group-item">Date: {{ schedule.date }}</li>
+                <li class="list-group-item">Start Time: {{ schedule.start_time }}</li>
+                <li class="list-group-item">End Time: {{ schedule.end_time }}</li>
+                <li class="list-group-item">Department: {{ schedule.department }}</li>
+
+  
+              </ul>
+              <a href="{% url 'add_schedule' %}" class="btn btn-link text-primary">Add</a>
+              <a href="{% url 'edit_schedule' schedule.id %}" class="btn btn-link text-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>  
+  
+  
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'view_hospital' %}">View Hospital</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_hospital' %}">Add Hospital</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'edit_hospital' %}">Edit Hospital</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card mt-5">
+          <div class="card-header bg-danger text-white">
+            <h2 class="text-center ">View Hospital</h2>
+          </div>
+          <div class="card-body border border-danger">
+            <ul class="list-group text-justify">
+
+              <li class="list-group-item">Name: {{ hospital.name }}</li>
+              <li class="list-group-item">Phone: {{ hospital.phone }}</li>
+              <li class="list-group-item">Email: {{ hospital.email }}</li>
+              <li class="list-group-item">Location: {{ hospital.location }}</li>
+              <li class="list-group-item">Description: {{ hospital.description }}</li>
+              <li class="list-group-item">Facilities: {{ hospital.facilities }}</li>
+
+            </ul>
+            <!-- <a href="{% url 'edit_hospital' %}" class="btn btn-link text-primary">Edit</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
+
+{% endblock %}

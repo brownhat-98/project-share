@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mt-5">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="text-center ">Convert User</h2>
+                </div>
+                <div class="card-body border border-danger">
+                <p>Are you sure you want to convert the user roles?</p>
+                <a href="{% url 'convert_user' profile.user.id 'Admin' %}" class="btn btn-warning">Convert to Admin</a>
+                <a href="{% url 'convert_user' profile.user.id 'Doctor' %}" class="btn btn-warning">Convert to Doctor</a>
+                <a href="{% url 'convert_user' profile.user.id 'Patient' %}" class="btn btn-warning">Convert to Patient</a>
+                <a href="{% url 'profile_edit' profile.user.id %}" class="btn btn-success">No</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

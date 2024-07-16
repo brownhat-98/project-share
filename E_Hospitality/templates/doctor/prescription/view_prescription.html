@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="card mt-5">
+            <div class="card-header bg-danger text-white">
+              <h2 class="text-center ">View prescription</h2>
+            </div>
+            <div class="card-body border border-danger">
+              <ul class="list-group text-justify">
+  
+                <li class="list-group-item">Doctor: {{ prescription.doctor }}</li>
+                <li class="list-group-item">patient: {{ prescription.patient }}</li>
+                <li class="list-group-item">prescription: {{ prescription.prescription }}</li>
+                <li class="list-group-item">medicines : {{ prescription.medicines }}</li>
+                <li class="list-group-item">consumption_instruction : {{ prescription.consumption_instruction }}</li>
+                <li class="list-group-item">date_created: {{ prescription.date_created }}</li>
+
+  
+              </ul>
+              <a href="{% url 'edit_prescription' prescription.id %}" class="btn btn-link text-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>  
+  
+  
+{% endblock %}

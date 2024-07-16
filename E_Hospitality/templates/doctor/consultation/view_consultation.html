@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h2 class="text-center">Consultations</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>doctor</th>
+                                <th>patient</th>
+                                <th>diagnosis</th>
+                                <th>prescription</th>
+                                <th>date_created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for consultation in consultations %}
+                            <tr>
+                                <td>{{ consultation.id }}</td>
+                                <td>{{ consultation.doctor }}</td>
+                                <td>{{ consultation.diagnosis }}</td>
+                                <td>{{ consultation.price }}</td>
+                                <td>{{ consultation.prescription }}</td>
+                                <td>{{ consultation.date_created }}</td>
+                                <td>
+                                    <a href="{% url 'edit_consultation' consultation.id %}" class="btn btn-primary">edit</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+{% endblock %}

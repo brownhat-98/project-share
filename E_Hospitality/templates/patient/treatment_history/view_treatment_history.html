@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div class="card mt-5">
+            <div class="card-header bg-danger text-white">
+              <h2 class="text-center ">View treatment_history</h2>
+            </div>
+            <div class="card-body border border-danger">
+              <ul class="list-group text-justify">
+
+                <li class="list-group-item">patient: {{ treatment_history.patient }}</li>
+                <li class="list-group-item">description : {{ treatment_history.description }}</li>
+                <li class="list-group-item">consultations : {{ treatment_history.consultations }}</li>
+                <li class="list-group-item">date_created: {{ treatment_history.date_created }}</li>
+
+  
+              </ul>
+              <a href="{% url 'edit_treatment_history' treatment_history.pk %}" class="btn btn-link text-primary">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>  
+  
+  
+{% endblock %}

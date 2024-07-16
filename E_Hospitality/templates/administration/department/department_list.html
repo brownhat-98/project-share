@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}View Departments{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card mt-5">
+          <div class="card-header bg-danger text-white">
+            <h2 class="text-center ">Department List</h2>
+          </div>
+          <div class="card-body border border-danger">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Doctor</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr>
+                        <td>{{ department.id }}</td>
+                        <td>{{ department.name }}</td>
+                        <td>{{ department.doctor }}</td>
+                        <td>{{ department.phone }}</td>
+                        <td>
+                            <a href="{% url 'view_department' department.id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
+
+{% endblock %}

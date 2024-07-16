@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}View Department{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card mt-5">
+          <div class="card-header bg-danger text-white">
+            <h2 class="text-center ">View Department</h2>
+          </div>
+          <div class="card-body border border-danger">
+            <div class="col-md-5">
+                <img src="{{ doctor.image.url }}" class="img-fluid d-flex" alt="...">
+                <p>Name : Dr.{{ doctor.name }} {{ doctor.qualification }}</p>
+                <p>Specialization : {{ doctor.specialization }}</p>
+                <p>Phone : {{ doctor.phone }}</p>
+                <p>Email : {{ doctor.email }}</p>
+                
+            </div>
+            <div class="col-md-7">
+            <ul class="list-group text-justify">
+              <li class="list-group-item">ID: {{ department.id }}</li>  
+              <li class="list-group-item">Name: {{ department.name }}</li>
+              <li class="list-group-item">Description: {{ department.description }}</li>
+              <li class="list-group-item">Phone: {{ department.phone }}</li>
+              <li class="list-group-item">Doctor: {{ department.doctor }} <a href="{% url 'profile_view' department.doctor.id %}">View</a></li> 
+              <li class="list-group-item">Equipment: {{ department.equipment }}</li>
+
+            </ul>
+            </div>
+            <br>
+            <a href="{% url 'edit_department' department.id %}" class="btn btn-primary">Edit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
+
+{% endblock %}
