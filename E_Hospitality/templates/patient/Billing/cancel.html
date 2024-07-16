@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Payment Canceled</h2>
+    <p>Your payment has been canceled. Please try again.</p>
+    <a href="{% url 'billing:view_invoice' invoice.pk %}" class="btn btn-primary">View Invoice</a>
+</div>
+{% endblock %}

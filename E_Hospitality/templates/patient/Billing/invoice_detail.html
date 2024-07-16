@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="col-md-12">
+    <div class="card mt-5">
+        <div class="card-header bg-danger text-white"><h2>Invoice</h2></div>
+        <div class="card-body outline border border-danger">
+            <p>Patient: {{ billing.patient }}</p>
+            <p>Doctor: {{ billing.doctor }}</p>
+            <p>Prescription: {{ billing.prescription }}</p>
+            <p>Amount: ₹{{ billing.amount }}</p>
+            <p>Date Created: {{ billing.date_created }}</p>
+            <form method="post" action="{% url 'create_checkout_session' billing.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Make Payment</button>
+            </form>
+            <br>
+            <a href="{% url 'edit_invoice' billing.pk %}" class="btn btn-primary">Edit Invoice</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

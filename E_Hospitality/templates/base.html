@@ -88,10 +88,11 @@
                                 <ul class="nav flex-column ms-3">
                                     <li class="nav-item"><a class="nav-link" href="{% url 'create_appointment' %}">Create Appointment</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'department_list' %}">Department</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_treatment_history' %}">Treatment History</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'treatment_history_list' %}">Treatment History</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">Appointment</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_medical_history' %}">Medical History</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'medical_history_list' %}">Medical History</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'view_consultation' %}">Consultation</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'list_invoices' %}">Invoices</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -106,6 +107,7 @@
                                     <li class="nav-item"><a class="nav-link" href="{% url 'view_hospital' %}">Hospital</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'department_list' %}">Departments</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">Appointments</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'list_invoices' %}">Invoices</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -118,12 +120,24 @@
                                     <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">View Appointments</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'add_schedule' %}">Add Schedule</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'add_consultation' %}">Create Consultation</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'add_medicine' %}">Add Medicines</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'create_prescription' %}">Create Prescriptions</a></li>
 
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#PharmacyMenu" aria-expanded="false">
+                              Pharmacy
+                          </a>
+                          <div class="collapse" id="PharmacyMenu">
+                              <ul class="nav flex-column ms-3">
+                                  <li class="nav-item"><a class="nav-link" href="{% url 'add_medicine' %}">Add Medicines</a></li>
+                                  <li class="nav-item"><a class="nav-link" href="{% url 'create_invoice' %}">create_invoice</a></li>
+
+
+                              </ul>
+                          </div>
+                      </li>
                     </ul>
                 </div>
             </nav>
@@ -153,8 +167,8 @@
                             ecosystem</p>
                         </div>
                       </div>
-                      
-                    
+
+
                     
                     {% endblock %}
                 </div>

@@ -34,4 +34,5 @@ urlpatterns = [
     path('appointment/view/', views.view_appointment, name='view_appointment'),
     path('appointment_list/', views.appointment_list, name='appointment_list'),
     path('appointment/success/', TemplateView.as_view(template_name='administration/appointment/appointment_success.html'), name='appointment_success'),
+
 ]

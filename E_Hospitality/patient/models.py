@@ -23,7 +23,7 @@ class TreatmentHistory(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.description
+        return self.diagnosis
 
 class MedicalHistory(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
@@ -44,8 +44,10 @@ class Billing(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     description = models.TextField()
     doctor = models.ForeignKey('doctor.DoctorProfile', on_delete=models.CASCADE)
-    prescription = models.TextField()
-    amount = models.CharField(max_length=10)
+    medicines = models.ForeignKey('doctor.Medicines', on_delete=models.CASCADE, null=True, blank=True)
+    amount = models.CharField(max_length=10, null=True, blank=True)
+    paid = models.BooleanField(default=False)
+    total = models.CharField(max_length=10, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        Treatment History
+    </div>
+    <div class="card-body border border-danger">
+        <a href="{% url 'add_treatment_history' %}" class="btn btn-success mb-3">Add Treatment History</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Diagnosis</th>
+                    <th>Consultations</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in histories %}
+                <tr>
+                    <td>{{ history.diagnosis }}</td>
+                    <td>{{ history.consultations }}</td>
+                    <td>{{ history.date_created }}</td>
+                    <td>
+                        <a href="{% url 'edit_treatment_history' history.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'delete_treatment_history' history.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

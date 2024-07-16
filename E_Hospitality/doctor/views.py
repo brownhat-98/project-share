@@ -27,7 +27,6 @@ def view_schedule(request, pk):
     return render(request,'doctor/schedule/view_schedule.html',{'schedule': schedule})
 
 @login_required
-@admin_required
 def add_schedule(request):
     if request.method == 'POST':
         form = ScheduleForm(request.POST)

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        Medical History
+    </div>
+    <div class="card-body">
+        <a href="{% url 'add_medical_history' %}" class="btn btn-success mb-3">Add Medical History</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Blood Group</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Allergies</th>
+                    <th>Treatment History</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in histories %}
+                <tr>
+                    <td>{{ history.description }}</td>
+                    <td>{{ history.age }}</td>
+                    <td>{{ history.gender }}</td>
+                    <td>{{ history.blood_group }}</td>
+                    <td>{{ history.height }}</td>
+                    <td>{{ history.weight }}</td>
+                    <td>{{ history.allergies }}</td>
+                    <td>{{ history.treatment_history }}</td>
+                    <td>{{ history.date_created }}</td>
+                    <td>
+                        <a href="{% url 'edit_medical_history' history.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'delete_medical_history' history.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

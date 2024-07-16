@@ -1,6 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import stripe
+from django.conf import settings
+from django.urls import reverse
+
 
 from .forms import BillingForm as InvoiceForm
 from .forms import *
@@ -10,211 +14,178 @@ from .models import Billing as Invoice
 def patientprofile(request):
     return render(request, 'patient/patient.html')
 
-#___________________________________________________TREATMENT HISTORY VIEWS↓
-@login_required(login_url='login')
+@login_required
+def treatment_history_list(request):
+    patient = get_object_or_404(PatientProfile, user=request.user)
+    histories = TreatmentHistory.objects.filter(patient=patient)
+    return render(request, 'patient/treatment_history/treatment_history_list.html', {'histories': histories})
+
+@login_required
 def add_treatment_history(request):
     if request.method == 'POST':
         form = TreatmentHistoryForm(request.POST)
         if form.is_valid():
-            treatment_history = form.save()
-            return redirect('view_treatment_history', treatment_history.id)
-        else:
-            messages.error(request, 'Error adding treatment history')
+            history = form.save(commit=False)
+            history.patient = get_object_or_404(PatientProfile, user=request.user)
+            history.save()
+            messages.success(request, 'Treatment history added successfully.')
+            return redirect('treatment_history_list')
     else:
         form = TreatmentHistoryForm()
-    return render(request, 'patient/treatment_history/add_treatment_history.html', {'form': form})
+    return render(request, 'patient/treatment_history/treatment_history_form.html', {'form': form})
 
-@login_required(login_url='login')
+@login_required
 def edit_treatment_history(request, pk):
-    treatment_history = TreatmentHistory.objects.get(id=pk)
+    history = get_object_or_404(TreatmentHistory, pk=pk)
     if request.method == 'POST':
-        form = TreatmentHistoryForm(request.POST, instance=treatment_history)
+        form = TreatmentHistoryForm(request.POST, instance=history)
         if form.is_valid():
-            treatment_history = form.save()
-            return redirect('view_treatment_history', treatment_history.id)
-        else:
-            messages.error(request, 'Error editing treatment history')
+            form.save()
+            messages.success(request, 'Treatment history updated successfully.')
+            return redirect('treatment_history_list')
     else:
-        form = TreatmentHistoryForm(instance=treatment_history)
-    return render(request, 'patient/treatment_history/edit_treatment_history.html', {'form': form})
+        form = TreatmentHistoryForm(instance=history)
+    return render(request, 'patient/treatment_history/treatment_history_form.html', {'form': form})
 
-@login_required(login_url='login')
-def view_treatment_history(request, pk):
-    treatment_history = TreatmentHistory.objects.get(id=pk)
-    return render(request, 'patient/treatment_history/view_treatment_history.html', {'treatment_history': treatment_history})
+@login_required
+def delete_treatment_history(request, pk):
+    history = get_object_or_404(TreatmentHistory, pk=pk)
+    if request.method == 'POST':
+        history.delete()
+        messages.success(request, 'Treatment history deleted successfully.')
+        return redirect('treatment_history_list')
+    return render(request, 'patient/treatment_history/treatment_history_confirm_delete.html', {'history': history})
 
+# Medical History Views
+@login_required
+def medical_history_list(request):
+    patient = get_object_or_404(PatientProfile, user=request.user)
+    histories = MedicalHistory.objects.filter(patient=patient)
+    return render(request, 'patient/medical_history/medical_history_list.html', {'histories': histories})
 
-# @login_required(login_url='login')
-# def view_treatment_history(request, pk=None):
-#     treatment_history = None
-#     if pk:
-#         try:
-#             treatment_history = TreatmentHistory.objects.get(id=pk)
-#         except TreatmentHistory.DoesNotExist:
-#             messages.error(request, 'Treatment history not found.')
-#             return redirect('base_view')
-#     else:
-#         if request.user.groups.filter(name='Patient').exists():
-#             treatment_history = TreatmentHistory.objects.filter(patient=request.user.patientprofile)
-#         elif request.user.groups.filter(name='Doctor').exists():
-#             treatment_history = TreatmentHistory.objects.filter(doctor=request.user.doctorprofile)
-#         else:
-#             messages.error(request, 'No treatment history found for this user.')
-#             return redirect('base_view') 
-
-#     return render(request, 'patient/treatment_history/view_treatment_history.html', {'treatment_history': treatment_history})
-
-#___________________________________________________MEDICAL HISTORY VIEWS↓
-@login_required(login_url='login')
+@login_required
 def add_medical_history(request):
     if request.method == 'POST':
         form = MedicalHistoryForm(request.POST)
         if form.is_valid():
-            medical_history = form.save()
-            return redirect('view_medical_history', medical_history.id)
-        else:
-            messages.error(request, 'Error adding medical history')
+            history = form.save(commit=False)
+            history.patient = get_object_or_404(PatientProfile, user=request.user)
+            history.save()
+            messages.success(request, 'Medical history added successfully.')
+            return redirect('medical_history_list')
     else:
         form = MedicalHistoryForm()
-    return render(request, 'patient/medical_history/add_medical_history.html', {'form': form})
+    return render(request, 'patient/medical_history/medical_history_form.html', {'form': form})
 
-@login_required(login_url='login')
+@login_required
 def edit_medical_history(request, pk):
-    medical_history = MedicalHistory.objects.get(id=pk)
+    history = get_object_or_404(MedicalHistory, pk=pk)
     if request.method == 'POST':
-        form = MedicalHistoryForm(request.POST, instance=medical_history)
+        form = MedicalHistoryForm(request.POST, instance=history)
         if form.is_valid():
-            medical_history = form.save()
-            return redirect('view_medical_history', medical_history.id)
-        else:
-            messages.error(request, 'Error editing medical history')
+            form.save()
+            messages.success(request, 'Medical history updated successfully.')
+            return redirect('medical_history_list')
     else:
-        form = MedicalHistoryForm(instance=medical_history)
-    return render(request, 'patient/medical_history/edit_medical_history.html', {'form': form})
+        form = MedicalHistoryForm(instance=history)
+    return render(request, 'patient/medical_history/medical_history_form.html', {'form': form})
 
-@login_required(login_url='login')
-def view_medical_history(request, pk=None):
-    medical_history = None
-    if pk:
-        try:
-            medical_history = MedicalHistory.objects.get(id=pk)
-        except MedicalHistory.DoesNotExist:
-            messages.error(request, 'Medical history not found.')
-            return redirect('base_view')
-    else:
-        if request.user.groups.filter(name='Patient').exists():
-            medical_history = MedicalHistory.objects.filter(patient=request.user.patientprofile)
-        elif request.user.groups.filter(name='Doctor').exists():
-            medical_history = MedicalHistory.objects.filter(doctor=request.user.doctorprofile)
-        else:
-            messages.error(request, 'No medical history found for this user.')
-            return redirect('base_view')
+@login_required
+def delete_medical_history(request, pk):
+    history = get_object_or_404(MedicalHistory, pk=pk)
+    if request.method == 'POST':
+        history.delete()
+        messages.success(request, 'Medical history deleted successfully.')
+        return redirect('medical_history_list')
+    return render(request, 'patient/medical_history/medical_history_confirm_delete.html', {'history': history})
 
-    return render(request, 'patient/medical_history/view_medical_history.html', {'medical_history': medical_history})
 
 #___________________________________________________BILLING VIEWS↓
-@login_required(login_url='login')
-def add_invoice(request):
-    if request.method == 'POST':
-        form = InvoiceForm(request.POST)
-        if form.is_valid():
-            invoice = form.save()
-            return redirect('view_invoice', invoice.id)
-        else:
-            messages.error(request, 'Error adding invoice')
+@login_required
+def list_invoices(request):
+    if request.user.groups.filter(name='Admin').exists():
+        invoices = Billing.objects.all()
     else:
-        form = InvoiceForm()
-    return render(request, 'patient/Billing/add_invoice.html', {'form': form})
+        patient_profile = get_object_or_404(PatientProfile, user=request.user)
+        invoices = Billing.objects.filter(patient=patient_profile)
+    return render(request, 'patient/billing/invoice_list.html', {'invoices': invoices})
 
-@login_required(login_url='login')
+@login_required
+def create_invoice(request):
+    if request.method == 'POST':
+        form = BillingForm(request.POST)
+        if form.is_valid():
+            billing = form.save(commit=False)
+            billing.save()
+            messages.success(request, 'Invoice created successfully.')
+            return redirect('view_invoice', pk=billing.pk)
+    else:
+        form = BillingForm()
+    return render(request, 'patient/billing/invoice_form.html', {'form': form})
+
+
+@login_required
 def edit_invoice(request, pk):
-    invoice = Invoice.objects.get(id=pk)
+    billing = get_object_or_404(Billing, pk=pk)
     if request.method == 'POST':
-        form = InvoiceForm(request.POST, instance=invoice)
+        form = BillingForm(request.POST, instance=billing)
         if form.is_valid():
-            invoice = form.save()
-            return redirect('view_invoice', invoice.id)
-        else:
-            messages.error(request, 'Error editing invoice')
+            form.save()
+            messages.success(request, 'Invoice updated successfully.')
+            return redirect('view_invoice', pk=billing.pk)
     else:
-        form = InvoiceForm(instance=invoice)
-    return render(request, 'patient/Billing/edit_invoice.html', {'form': form})
+        form = BillingForm(instance=billing)
+    return render(request, 'patient/billing/invoice_form.html', {'form': form})
 
-@login_required(login_url='login')
-def view_invoice(request, pk=None):
-    invoice = None
-    if pk:
-        try:
-            invoice = Invoice.objects.get(id=pk)
-        except Invoice.DoesNotExist:
-            messages.error(request, 'Invoice not found.')
-            return redirect('base_view')  # Replace 'base_view' with an appropriate view
-    else:
-        if request.user.groups.filter(name='Patient').exists():
-            invoice = Invoice.objects.filter(patient=request.user.patientprofile)
-        elif request.user.groups.filter(name='Doctor').exists():
-            invoice = Invoice.objects.filter(doctor=request.user.doctorprofile)
-        else:
-            messages.error(request, 'No invoice found for this user.')
-            return redirect('base_view')  # Replace 'base_view' with an appropriate view
 
-    return render(request, 'patient/Billing/view_invoice.html', {'invoice': invoice})
+@login_required
+def view_invoice(request, pk):
+    billing = get_object_or_404(Billing, pk=pk)
+    return render(request, 'patient/billing/invoice_detail.html', {'billing': billing})
 
 
 
-# #____________________________________________________________PAYMENTGATEWAY
-# def create_checkout_session(request):
-#     cart = Cart(request)
+#____________________________________________________________PAYMENTGATEWAY
+@login_required
+def create_checkout_session(request, pk):
+    billing = get_object_or_404(Billing, pk=pk)
 
-#     if request.method == 'POST':
-#         line_items=[]
-#         stripe.api_key=settings.STRIPE_SECRET_KEY
+    if request.method == 'POST':
+        stripe.api_key = settings.STRIPE_SECRET_KEY
 
-#         for item in cart.get_products():
+        line_item = {
+            'price_data': {
+                'currency': 'INR',
+                'unit_amount': int(billing.total) * 100,
+                'product_data': {
+                    'name': billing.description,
+                },
+            },
+            'quantity': 1,
+        }
 
-#             if item:
-#                 line_item={
-#                     'price_data':{
-#                         'currency':'INR',
-#                         'unit_amount':int(item.price *100),
-#                         'product_data':{
-#                             'name':item.title
-#                         },
-#                     },
-#                     'quantity':cart.get_quantity(item.id)
-#                 }
-#                 line_items.append(line_item)
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[line_item],
+            mode='payment',
+            success_url=request.build_absolute_uri(reverse('success',pk)),
+            cancel_url=request.build_absolute_uri(reverse('cancel')),
+        )
+        return redirect(checkout_session.url, code=303)
 
-
-#         if line_items:
-#             checkout_session=stripe.checkout.Session.create(
-#                 payment_method_types=['card'],
-#                 line_items=line_items,
-#                 mode='payment',
-#                 success_url=request.build_absolute_uri(reverse('success')),
-#                 cancel_url=request.build_absolute_uri(reverse('cancel'))
-#             )
-#             return redirect(checkout_session.url,code=303)
+    return render(request, 'patient/billing/view_invoice.html', {'billing': billing})
 
 # #____________________________________________________________PAYMENTSUCCESS
-# def success(request):
-#     cart = Cart(request)
-#     cart_items=cart.get_products()
-
-#     for item in cart_items:
-#         product=item
-#         if product.quantity>=cart.get_quantity(item.id):
-#             product.quantity-=cart.get_quantity(item.id)
-#             product.save()
-
-#     # cart_items.delete()
-#     cart.clear()
-
-#     return render(request,'userapp/success.html')
+@login_required
+def success(request,pk):
+    billing = get_object_or_404(Billing, pk=pk)
+    billing.paid = True
+    billing.save()
+    return render(request, 'patient/billing/success.html')
 
 
 
 # #____________________________________________________________PAYMENTFAIL
-# def cancel(request):
-#     return render(request,'userapp/cancel.html')
-
+@login_required
+def cancel(request):
+    return render(request, 'patient/billing/cancel.html')

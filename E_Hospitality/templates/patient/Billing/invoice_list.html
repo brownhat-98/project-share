@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mt-5">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="text-center">Invoice List</h2>
+                </div>
+                <div class="card-body border border-danger">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Description</th>
+
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                    <tr>
+                        <td>{{ invoice.patient }}</td>
+                        <td>{{ invoice.description }}</td>
+                        <td>{{ invoice.amount }}</td>
+                        <td>{{ invoice.paid }}</td>
+                        <td>{{ invoice.date_created }}</td>
+                        <td>
+                            <a href="{% url 'view_invoice' invoice.pk %}" class="btn btn-primary">View</a>
+                            {% if not invoice.paid %}
+                            <a href="{% url 'create_checkout_session' invoice.pk %}" class="btn btn-success">Pay</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -5,7 +5,7 @@ from doctor.models import Consultation
 class TreatmentHistoryForm(forms.ModelForm):
     class Meta:
         model = TreatmentHistory
-        fields = '__all__'
+        fields = ['diagnosis', 'consultations']
 
 class MedicalHistoryForm(forms.ModelForm):
     class Meta:
@@ -15,4 +15,4 @@ class MedicalHistoryForm(forms.ModelForm):
 class BillingForm(forms.ModelForm):
     class Meta:
         model = Billing
-        fields = '__all__'
+        fields = ['patient','doctor','description', 'medicines', 'amount','paid','total']
