@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
 from .decorators import admin_required
 from .models import Schedule
@@ -22,9 +23,17 @@ def schedule_list(request):
     return render(request,'doctor/schedule/schedule_list.html',{'schedules': schedules})
 
 @login_required(login_url='login')
-def view_schedule(request, pk):
-    schedule=Schedule.objects.get(id=pk)
-    return render(request,'doctor/schedule/view_schedule.html',{'schedule': schedule})
+def view_schedule(request, pk=None):
+    try:
+        if pk:
+            schedule = Schedule.objects.get(id=pk)
+        else:
+            doctor = get_object_or_404(DoctorProfile, user=request.user)
+            schedule = Schedule.objects.get(doctor=doctor)  
+    except ObjectDoesNotExist:
+        schedule = None  # Or handle this case as you see fit
+    
+    return render(request, 'doctor/schedule/view_schedule.html', {'schedule': schedule})
 
 @login_required
 def add_schedule(request):
@@ -81,14 +90,18 @@ def create_prescription(request):
 
 
 @login_required(login_url='login')
-def view_prescription(request, pk=None):
-    if pk:
-        prescription = get_object_or_404(Prescription, id=pk)
+def prescription_list(request):
+    if request.user.groups.filter(name='Doctor').exists():
+        doctor=get_object_or_404(DoctorProfile, user=request.user)
+        prescriptions=Prescription.objects.filter(doctor=doctor)
     else:
-        if request.user.groups.filter(name='Patient').exists():
-            prescription = get_object_or_404(Prescription, patient=request.user.patientprofile)
-        else:
-            prescription = get_object_or_404(Prescription, doctor=request.user.doctorprofile)
+        prescriptions=Prescription.objects.all()    
+    return render(request, 'doctor/prescription/prescription_list.html', {'prescriptions': prescriptions})
+
+
+@login_required(login_url='login')
+def view_prescription(request, pk):
+    prescription = get_object_or_404(Prescription, id=pk)
 
     return render(request, 'doctor/prescription/view_prescription.html', {'prescription': prescription})
 
@@ -99,7 +112,7 @@ def edit_prescription(request, pk):
         form = PrescriptionForm(request.POST, instance=prescription)
         if form.is_valid():
             prescription = form.save()
-            form.save()
+            form.save_m2m()
             return redirect('view_prescription', prescription.id)
         else:
             messages.error(request, 'Error adding prescription')
@@ -181,7 +194,7 @@ def edit_medicine(request, pk):
         if form.is_valid():
             medicine = form.save()
             form.save()
-            return redirect('view_medicine', medicine.id)
+            return redirect('view_medicines')
         else:
             messages.error(request, 'Error adding medicine')
     else:

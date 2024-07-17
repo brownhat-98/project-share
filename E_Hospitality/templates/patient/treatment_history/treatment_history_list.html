@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="card">
-    <div class="card-header bg-danger text-white">
-        Treatment History
-    </div>
-    <div class="card-body border border-danger">
-        <a href="{% url 'add_treatment_history' %}" class="btn btn-success mb-3">Add Treatment History</a>
-        <table class="table table-bordered">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mt-5">
+            <div class="card-header bg-danger text-white">
+                <h2 class="text-center">Treatment History</h2>
+            </div>
+            <div class="card-body border border-danger">
+            <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Diagnosis</th>
@@ -22,8 +24,14 @@
                     <td>{{ history.consultations }}</td>
                     <td>{{ history.date_created }}</td>
                     <td>
+                        <a href="{% url 'view_treatment_history' history.pk %}" class="btn btn-primary btn-sm">View</a>
+                    {% if not user_roles.is_patient %}
+                        <a href="{% url 'add_treatment_history' %}" class="btn btn-success mb-3">Add Treatment History</a>
                         <a href="{% url 'edit_treatment_history' history.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                        {% if not user_roles.is_doctor %}
                         <a href="{% url 'delete_treatment_history' history.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% endif %}
+                    {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

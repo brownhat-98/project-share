@@ -1,46 +1,54 @@
 {% extends 'base.html' %}
+{% block title %}View Appointments{% endblock %}
 
-{% block title %}View appointments{% endblock %}
 {% block content %}
-
-<div class="container-fluid">
+<div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="card mt-5">
-          <div class="card-header bg-danger text-white">
-            <h2 class="text-center ">appointment List</h2>
-          </div>
-          <div class="card-body border border-danger">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Doctor</th>
-                        <th>Patient</th>
-                        <th>date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for appointment in appointments %}
-                    <tr>
-                        <td>{{ appointment.id }}</td>
-                        <td>{{ appointment.name }}</td>
-                        <td>{{ appointment.doctor }}</td>
-                        <td>{{ appointment.patient }}</td>
-                        <td>{{ appointment.date }}</td>
-                        <td>
-                            <a href="{% url 'view_appointment' appointment.id %}" class="btn btn-primary">View</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-          </div>
+        <div class="col-md-12">
+            <div class="card mt-5">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="text-center">Appointments</h2>
+                </div>
+                <div class="card-body border border-danger">
+                    {% if appointments %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Department</th>
+                                <th>Date</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Description</th>
+                                <th>Symptoms</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ appointment.patient.user.username }}</td>
+                                <td>{{ appointment.doctor.user.username }}</td>
+                                <td>{{ appointment.department.name }}</td>
+                                <td>{{ appointment.date }}</td>
+                                <td>{{ appointment.start_time }}</td>
+                                <td>{{ appointment.end_time }}</td>
+                                <td>{{ appointment.description }}</td>
+                                <td>{{ appointment.symptoms }}</td>
+                                <td><a href="{% url 'view_appointment' appointment.id %}" class="btn btn-primary"> View </a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-warning">No appointments found.</div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-</div>  
-
+</div>
 {% endblock %}

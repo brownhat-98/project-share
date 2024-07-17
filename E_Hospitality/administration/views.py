@@ -265,10 +265,10 @@ def edit_department(request, department_id):
 @login_required(login_url='login')
 def view_department(request, department_id):
     department = get_object_or_404(Department, pk=department_id)
-    doctors = DoctorProfile.objects.filter(assigned_dept=department)
+    doctor = Department.objects.get(id=department_id).doctor
     return render(request, 'administration/department/view_department.html', {
         'department': department,
-        'doctors': doctors,
+        'doctor': doctor,
     })
 
 
@@ -292,7 +292,14 @@ def department_list(request):
 #______________________________________________________________________APPOINTMENT CRUD↓
 @login_required(login_url='login')
 def appointment_list(request):
-    appointments = AppointmentSchedule.objects.all()
+    if request.user.groups.filter(name='Doctor').exists():
+        doctor = get_object_or_404(DoctorProfile, user=request.user)
+        appointments = AppointmentSchedule.objects.filter(doctor=doctor)
+    elif request.user.groups.filter(name='Patient').exists():
+        patient = get_object_or_404(PatientProfile, user=request.user)
+        appointments = AppointmentSchedule.objects.filter(patient=patient)
+    else:
+        appointments = AppointmentSchedule.objects.all()
     return render(request, 'administration/appointment/appointment_list.html', {'appointments': appointments})
 
 
@@ -328,7 +335,7 @@ def create_appointment(request):
                     start_time=start_time,
                     end_time=end_time
                 )
-                return redirect('view_appointment', pk=appointment.id)  # Redirect to view with appointment ID
+                return redirect('appointment_success')  # Redirect to view with appointment ID
         else:
             messages.error(request, 'Please correct the errors below.')
 
@@ -344,16 +351,8 @@ def create_appointment(request):
 
 
 @login_required(login_url='login')
-def view_appointment(request):
-    if request.user.groups.filter(name='Doctor').exists():
-        doctor = get_object_or_404(DoctorProfile, user=request.user)
-        appointments = AppointmentSchedule.objects.filter(doctor=doctor)
-    elif request.user.groups.filter(name='Patient').exists():
-        patient = get_object_or_404(PatientProfile, user=request.user)
-        appointments = AppointmentSchedule.objects.filter(patient=patient)
-    else:
-        appointments = AppointmentSchedule.objects.all()
-
-    return render(request, 'administration/appointment/view_appointment.html', {'appointments': appointments})
+def view_appointment(request,pk):
+    appointment=get_object_or_404(AppointmentSchedule, pk=pk)
+    return render(request, 'administration/appointment/view_appointment.html', {'appointment': appointment})
 
 #______________________________________________________________________APPOINTMENT CRUD↑

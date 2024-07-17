@@ -16,7 +16,7 @@
                         <th>Description</th>
 
                         <th>Amount</th>
-                        <th>Status</th>
+                        <th>Paid</th>
                         <th>Date Created</th>
                         <th>Actions</th>
                     </tr>
@@ -27,13 +27,10 @@
                         <td>{{ invoice.patient }}</td>
                         <td>{{ invoice.description }}</td>
                         <td>{{ invoice.amount }}</td>
-                        <td>{{ invoice.paid }}</td>
+                        <td>{% if invoice.paid %}PAID{% else %}Unpaid{% endif %}</td>
                         <td>{{ invoice.date_created }}</td>
                         <td>
                             <a href="{% url 'view_invoice' invoice.pk %}" class="btn btn-primary">View</a>
-                            {% if not invoice.paid %}
-                            <a href="{% url 'create_checkout_session' invoice.pk %}" class="btn btn-success">Pay</a>
-                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

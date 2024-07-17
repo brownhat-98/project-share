@@ -44,7 +44,7 @@ class Medicines(models.Model):
     description=models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return f'{self.brand} - {self.name}'
 
 class Prescription(models.Model):
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
@@ -55,7 +55,7 @@ class Prescription(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Prescription for {self.patient}'
+        return f'Prescription for {self.patient} on {self.date_created}'
 
 class Consultation(models.Model):
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)

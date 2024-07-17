@@ -80,6 +80,7 @@
                                 Home
                             </a>
                         </li>
+                        {% if user_roles.is_patient %}
                         <li class="nav-item">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#userMenu" aria-expanded="false">
                                 User
@@ -87,15 +88,33 @@
                             <div class="collapse" id="userMenu">
                                 <ul class="nav flex-column ms-3">
                                     <li class="nav-item"><a class="nav-link" href="{% url 'create_appointment' %}">Create Appointment</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'department_list' %}">Department</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">View Appointments</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'treatment_history_list' %}">Treatment History</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">Appointment</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'medical_history_list' %}">Medical History</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_consultation' %}">Consultation</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{% url 'list_invoices' %}">Invoices</a></li>
                                 </ul>
                             </div>
                         </li>
+                        {% endif %}
+                        {% if user_roles.is_doctor %}
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentMenu" aria-expanded="false">
+                                Doctor
+                            </a>
+                            <div class="collapse" id="appointmentMenu">
+                                <ul class="nav flex-column ms-3">
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">View Appointments</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_schedule' %}">View Schedule</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'add_consultation' %}">Create Consultation</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_consultation' %}">View Consultation</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'create_prescription' %}">Create Prescriptions</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'prescription_list' %}">View Prescriptions</a></li>
+
+                                </ul>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% if user_roles.is_admin %}
                         <li class="nav-item">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false">
                                 Admin
@@ -111,20 +130,9 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#appointmentMenu" aria-expanded="false">
-                                Doctor
-                            </a>
-                            <div class="collapse" id="appointmentMenu">
-                                <ul class="nav flex-column ms-3">
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'appointment_list' %}">View Appointments</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'add_schedule' %}">Add Schedule</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'add_consultation' %}">Create Consultation</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'create_prescription' %}">Create Prescriptions</a></li>
+                        {% endif %}
 
-                                </ul>
-                            </div>
-                        </li>
+                        {% if user_roles.is_admin %}
                         <li class="nav-item">
                           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#PharmacyMenu" aria-expanded="false">
                               Pharmacy
@@ -132,12 +140,14 @@
                           <div class="collapse" id="PharmacyMenu">
                               <ul class="nav flex-column ms-3">
                                   <li class="nav-item"><a class="nav-link" href="{% url 'add_medicine' %}">Add Medicines</a></li>
+                                  <li class="nav-item"><a class="nav-link" href="{% url 'view_medicines' %}">View Medicines</a></li>
                                   <li class="nav-item"><a class="nav-link" href="{% url 'create_invoice' %}">create_invoice</a></li>
 
 
                               </ul>
                           </div>
                       </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>

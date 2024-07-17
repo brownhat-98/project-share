@@ -12,13 +12,15 @@
               <ul class="list-group text-justify">
 
                 <li class="list-group-item">patient: {{ treatment_history.patient }}</li>
-                <li class="list-group-item">description : {{ treatment_history.description }}</li>
+                <li class="list-group-item">diagnosis : {{ treatment_history.diagnosis }}</li>
                 <li class="list-group-item">consultations : {{ treatment_history.consultations }}</li>
                 <li class="list-group-item">date_created: {{ treatment_history.date_created }}</li>
 
   
               </ul>
-              <a href="{% url 'edit_treatment_history' %}" class="btn btn-link text-primary">Edit</a>
+              {% if not user_roles.is_patient %}
+              <a href="{% url 'edit_treatment_history' treatment_history.id %}" class="btn btn-link text-primary">Edit</a>
+              {% endif %}
             </div>
           </div>
         </div>

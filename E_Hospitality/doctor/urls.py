@@ -6,11 +6,12 @@ urlpatterns = [
 
     path('schedule_list/', views.schedule_list, name='schedule_list'),
     path('view_schedule/<int:pk>', views.view_schedule, name='view_schedule'),
+    path('view_schedule', views.view_schedule, name='view_schedule'),
     path('add_schedule', views.add_schedule, name='add_schedule'),
     path('edit_schedule/<int:pk>', views.edit_schedule, name='edit_schedule'),
 
     path('create_prescription/', views.create_prescription, name='create_prescription'),
-    path('view_prescription/', views.view_prescription, name='view_prescription'),
+    path('prescription_list/', views.prescription_list, name='prescription_list'),
     path('view_prescription/<int:pk>', views.view_prescription, name='view_prescription'),
     path('edit_prescription/<int:pk>', views.edit_prescription, name='edit_prescription'),
 

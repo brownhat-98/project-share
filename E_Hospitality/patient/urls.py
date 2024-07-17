@@ -7,9 +7,11 @@ urlpatterns = [
     path('add_treatment_history/', views.add_treatment_history, name='add_treatment_history'),
     path('edit_treatment_history/<int:pk>', views.edit_treatment_history, name='edit_treatment_history'),
     path('treatment_history_list/', views.treatment_history_list, name='treatment_history_list'),
+    path('view_treatment_history/<int:pk>', views.view_treatment_history, name='view_treatment_history'),
     path('delete_treatment_history/<int:pk>', views.delete_treatment_history, name='delete_treatment_history'),
 
     path('medical_history_list/', views.medical_history_list, name='medical_history_list'),
+    path('view_medical_history/<int:pk>', views.view_medical_history, name='view_medical_history'),
     path('add_medical_history/', views.add_medical_history, name='add_medical_history'),
     path('edit_medical_history/<int:pk>', views.edit_medical_history, name='edit_medical_history'),
     path('delete_medical_history/<int:pk>', views.delete_medical_history, name='delete_medical_history'),
@@ -19,6 +21,6 @@ urlpatterns = [
     path('billing/edit/<int:pk>/', views.edit_invoice, name='edit_invoice'),
     path('billing/view/<int:pk>/', views.view_invoice, name='view_invoice'),
     path('billing/checkout/<int:pk>/', views.create_checkout_session, name='create_checkout_session'),
-    path("success/", views.success, name='success'),
+    path("success/<int:pk>/", views.success, name='success'),
     path("cancel/", views.cancel, name='cancel'),
 ]

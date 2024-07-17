@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}View Departments{% endblock %}
+{% block title %}View prescriptions{% endblock %}
 {% block content %}
 
 <div class="container-fluid">
@@ -8,34 +8,33 @@
       <div class="col-md-12">
         <div class="card mt-5">
           <div class="card-header bg-danger text-white">
-            <h2 class="text-center ">Department List</h2>
+            <h2 class="text-center ">prescription List</h2>
           </div>
           <div class="card-body border border-danger">
             <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
                         <th>Doctor</th>
-                        <th>Phone</th>
+                        <th>patient</th>
+                        <th>date_created</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for department in departments %}
+                    {% for prescription in prescriptions %}
                     <tr>
-                        <td>{{ department.id }}</td>
-                        <td>{{ department.name }}</td>
-                        <td>{{ department.doctor }}</td>
-                        <td>{{ department.phone }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ prescription.doctor }}</td>
+                        <td>{{ prescription.patient }}</td>
+                        <td>{{ prescription.date_created }}</td>
                         <td>
-                            <a href="{% url 'view_department' department.id %}" class="btn btn-primary">View</a>
+                            <a href="{% url 'view_prescription' prescription.id %}" class="btn btn-primary">View</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'add_department' %}" class="btn btn-primary">Add Department</a>
           </div>
         </div>
       </div>

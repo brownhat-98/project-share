@@ -25,4 +25,4 @@ class ConsultationForm(forms.ModelForm):
 class MedicinesForm(forms.ModelForm):
     class Meta:
         model = Medicines
-        fields = '__all__'
+        fields = ['name', 'brand', 'price', 'description']

@@ -14,11 +14,17 @@ from .models import Billing as Invoice
 def patientprofile(request):
     return render(request, 'patient/patient.html')
 
-@login_required
+@login_required(login_url='login')
 def treatment_history_list(request):
     patient = get_object_or_404(PatientProfile, user=request.user)
     histories = TreatmentHistory.objects.filter(patient=patient)
     return render(request, 'patient/treatment_history/treatment_history_list.html', {'histories': histories})
+
+@login_required(login_url='login')
+def view_treatment_history(request, pk):
+    history = get_object_or_404(TreatmentHistory, pk=pk)
+    return render(request, 'patient/treatment_history/view_treatment_history.html', {'treatment_history': history})
+
 
 @login_required
 def add_treatment_history(request):
@@ -57,13 +63,18 @@ def delete_treatment_history(request, pk):
     return render(request, 'patient/treatment_history/treatment_history_confirm_delete.html', {'history': history})
 
 # Medical History Views
-@login_required
+@login_required(login_url='login')
 def medical_history_list(request):
     patient = get_object_or_404(PatientProfile, user=request.user)
     histories = MedicalHistory.objects.filter(patient=patient)
     return render(request, 'patient/medical_history/medical_history_list.html', {'histories': histories})
 
-@login_required
+@login_required(login_url='login')
+def view_medical_history(request, pk):
+    history = get_object_or_404(MedicalHistory, pk=pk)
+    return render(request, 'patient/medical_history/view_medical_history.html', {'medical_history': history})
+
+@login_required(login_url='login')
 def add_medical_history(request):
     if request.method == 'POST':
         form = MedicalHistoryForm(request.POST)
@@ -156,7 +167,7 @@ def create_checkout_session(request, pk):
         line_item = {
             'price_data': {
                 'currency': 'INR',
-                'unit_amount': int(billing.total) * 100,
+                'unit_amount': int(billing.amount) * 100,
                 'product_data': {
                     'name': billing.description,
                 },
@@ -168,12 +179,12 @@ def create_checkout_session(request, pk):
             payment_method_types=['card'],
             line_items=[line_item],
             mode='payment',
-            success_url=request.build_absolute_uri(reverse('success',pk)),
+            success_url=request.build_absolute_uri(reverse('success', args=[billing.pk])),
             cancel_url=request.build_absolute_uri(reverse('cancel')),
         )
         return redirect(checkout_session.url, code=303)
 
-    return render(request, 'patient/billing/view_invoice.html', {'billing': billing})
+    return render(request, 'billing/view_invoice.html', {'billing': billing})
 
 # #____________________________________________________________PAYMENTSUCCESS
 @login_required

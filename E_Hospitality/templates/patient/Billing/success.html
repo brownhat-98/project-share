@@ -4,6 +4,7 @@
 <div class="container mt-4">
     <h2 class="text-center">Payment Successful!</h2>
     <p>Thank you for your payment! Your invoice has been marked as paid.</p>
+    <a href="{% url 'list_invoices' %}" class="btn btn-primary">View Invoice List</a>
     <a href="{% url 'base_view' %}" class="btn btn-primary">Go to Home Page</a>
 </div>
 {% endblock %}
